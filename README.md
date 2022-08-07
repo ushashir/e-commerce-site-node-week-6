@@ -77,3 +77,16 @@ IMPLEMENT AUTHORIZATION AND AUTHENTICATION: PROTECT ALL ROUTES. ONLY THE LOGGED-
 - Test for a PUT request
 - Test for a DELETE request
 - Test to return proper HTTP status codes
+
+
+### PROJECT STRUCTURE MVC
+- MODEL
+
+- VIEW - UI with REACT
+
+- CONTROLLER
+
+### HINTS FROM DAMILOLA
+- Use EJS template. use html and css and render, template engines
+- all routes should be imported in app
+- orm  sequalize, type orl works similar to mongoose
