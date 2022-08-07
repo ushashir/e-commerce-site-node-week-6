@@ -15,15 +15,35 @@ ProductInstance.init({
         primaryKey: true,
         allowNull: false
     },
-    title: {
+    productName: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    completed: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
+    image: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    brand: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    category: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    description: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    price: {
+        type: sequelize_1.DataTypes.NUMBER,
+    },
+    countInStock: {
+        type: sequelize_1.DataTypes.NUMBER,
+    },
+    rating: {
+        type: sequelize_1.DataTypes.NUMBER,
+    },
+    numReviews: {
+        type: sequelize_1.DataTypes.NUMBER,
     }
 }, {
     sequelize: db_config_1.default,
-    tableName: 'todo'
+    tableName: 'products'
 });

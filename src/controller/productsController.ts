@@ -1,19 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { UserInstance } from "../model/users";
-import { createUserSchema, options, updateUserSchema } from "../utils/utils";
+import { ProductInstance } from "../model/products";
+
+import { createProductSchema, options} from "../utils/utils";
 
 export async function AddProduct(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
   // let todo = { ...req.body, id };
   try {
-    const validationResult = createUserSchema.validate(req.body, options);
+    const validationResult = createProductSchema.validate(req.body, options);
     if (validationResult.error) {
       return res.status(400).json({
         error: validationResult.error.details[0].message,
       });
     }
-    const record = await UserInstance.create({ ...req.body, id });
+    const record = await ProductInstance.create({ ...req.body, id });
+    console.log(record)
     res.status(201);
     res.json({
       message: "You have successfully added a new product",
@@ -34,7 +36,7 @@ export async function GetProducts(
   try {
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
-    const record = await UserInstance.findAll({ where: {}, limit, offset });
+    const record = await ProductInstance.findAll({ where: {}, limit, offset });
     res.status(200).json({
       message: "You have successfully retrieved all products",
       record,
@@ -47,8 +49,7 @@ export async function GetProducts(
   }
 }
 
-// Get single User
-
+// Get single product
 export async function GetProduct(
   req: Request,
   res: Response,
@@ -56,7 +57,7 @@ export async function GetProduct(
 ) {
   try {
     const { id } = req.params;
-    const record = await UserInstance.findOne({
+    const record = await ProductInstance.findOne({
       where: {
         id,
       },
@@ -80,21 +81,38 @@ export async function updateProduct(
 ) {
   try {
     const { id } = req.params;
-    const { email, password } = req.body;
-    const validationResult = updateUserSchema.validate(req.body, options);
-    const record = await UserInstance.findOne({
+    const {
+            productName,
+            image,
+            brand,
+            categories,
+            description,
+            price,
+            countInStock,
+            rating,
+            numReviews
+      } = req.body;
+    const validationResult = createProductSchema.validate(req.body, options);
+    const record = await ProductInstance.findOne({
       where: {
         id,
       },
     });
     if (!record) {
       return res.status(404).json({
-        error: "Cannot find user",
+        error: "Cannot find product",
       });
     }
     const updateRecord = await record.update({
-      email,
-      password,
+            productName,
+            image,
+            brand,
+            categories,
+            description,
+            price,
+            countInStock,
+            rating,
+            numReviews
     });
 
     res.status(202).json({
@@ -117,15 +135,15 @@ export async function deleteProduct(
 ) {
   try {
     const { id } = req.params
-    const record = await UserInstance.findOne({ where: { id } })
+    const record = await ProductInstance.findOne({ where: { id } })
     if (!record) {
       return res.status(404).json({
-        msg:"Cannot find Todo"
+        msg:"Cannot find Product"
       })
     }
     const deletedRecord = await record.destroy();
     return res.status(200).json({
-      msg: "Todo Deleted Succesfully", deletedRecord
+      msg: "Product Deleted Succesfully", deletedRecord
     })
   }
    catch (error) {

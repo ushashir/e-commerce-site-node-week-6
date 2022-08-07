@@ -2,14 +2,21 @@ import { DataTypes, Model } from 'sequelize';
 
 import db from '../config/db.config';
 
-interface TodoAttributes {
+interface ProductsAttributes {
     id: string;
-    title: string;
-    completed: boolean
+    productName: string;
+    image: string,
+    brand: string,
+    category: string,
+    description: string,
+    price: number,
+    countInStock: number,
+    rating: number,
+    numReviews: number
 }
 
 export class ProductInstance extends 
-    Model<TodoAttributes>{}
+    Model<ProductsAttributes>{}
 
 ProductInstance.init(
     {
@@ -18,16 +25,36 @@ ProductInstance.init(
             primaryKey: true,
         allowNull:false
         },
-        title: {
+        productName: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        completed: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
+        image: {
+            type: DataTypes.STRING,
+        },
+        brand: {
+            type: DataTypes.STRING,
+        },
+         category: {
+            type: DataTypes.STRING,
+        },
+         description: {
+            type: DataTypes.STRING,
+        },
+        price: {
+            type: DataTypes.NUMBER,
+        },
+         countInStock: {
+            type: DataTypes.NUMBER,
+        },
+         rating: {
+            type: DataTypes.NUMBER,
+        },
+        numReviews: {
+            type: DataTypes.NUMBER,
         }
     }, {
     sequelize: db,
-    tableName: 'todo'
+    tableName: 'products'
     
 });

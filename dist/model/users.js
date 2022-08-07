@@ -15,7 +15,44 @@ UserInstance.init({
         primaryKey: true,
         allowNull: false
     },
-    firstName: {
+    fullName: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "First name is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }
+    },
+    gender: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Last name is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }
+    },
+    email: {
+        type: sequelize_1.DataTypes.STRING,
+        // primaryKey: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Email is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }
+    },
+    phone: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -27,29 +64,12 @@ UserInstance.init({
             }
         }
     },
-    lastName: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    email: {
+    address: {
         type: sequelize_1.DataTypes.STRING,
-        primaryKey: true,
         allowNull: false,
         validate: {
             notNull: {
-                msg: "Password is required"
-            },
-            notEmpty: {
-                msg: "Enter a field"
-            }
-        },
-    },
-    phoneNumber: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: "Password is required"
+                msg: "Address is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -70,5 +90,5 @@ UserInstance.init({
     }
 }, {
     sequelize: db_config_1.default,
-    tableName: 'todo'
+    tableName: 'users'
 });

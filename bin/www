@@ -3,9 +3,10 @@
 /**
  * Module dependencies.
  */
+require('dotenv').config();
 
 var app = require('../dist/app').default;
-var debug = require('debug')('week5-009:server');
+var debug = require('debug') ('week5-009:server');
 var http = require('http');
 
 /**

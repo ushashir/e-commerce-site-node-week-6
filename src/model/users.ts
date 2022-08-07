@@ -2,18 +2,19 @@ import { DataTypes, Model } from 'sequelize';
 
 import db from '../config/db.config';
 
-interface TodoAttributes {
+interface UserAttributes {
     id: string;
-    firstName: string;
-    lastName: string;
+    fullName: string;
+    gender: string;
     email: string;
-    phoneNumber: number;
-    password: any;
+    phone: string;
+    address: string,
+    password: string;
     
 }
 
 export class UserInstance extends 
-    Model<TodoAttributes>{}
+    Model<UserAttributes>{}
 
 UserInstance.init(
     {
@@ -22,7 +23,44 @@ UserInstance.init(
             primaryKey: true,
         allowNull:false
         },
-    firstName: {
+    fullName: {
+            type: DataTypes.STRING,
+        allowNull: false,
+            validate: {
+            notNull: {
+                msg: "First name is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }
+        },
+    gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Last name is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }   
+        },
+    email: {
+            type: DataTypes.STRING,
+            // primaryKey: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Email is required"
+            },
+            notEmpty: {
+                msg: "Enter a field"
+            }
+        }
+        },
+    phone: {
             type: DataTypes.STRING,
         allowNull: false,
             validate: {
@@ -34,29 +72,12 @@ UserInstance.init(
             }
         }
         },
-    lastName: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
-    email: {
+     address: {
             type: DataTypes.STRING,
-            primaryKey: true,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: "Password is required"
-            },
-            notEmpty: {
-                msg: "Enter a field"
-            }
-        },
-        },
-    phoneNumber: {
-            type: DataTypes.NUMBER,
         allowNull: false,
             validate: {
             notNull: {
-                msg: "Password is required"
+                msg: "Address is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -77,6 +98,6 @@ UserInstance.init(
         }
     }, {
     sequelize: db,
-    tableName: 'todo'
+    tableName: 'users'
     
 });

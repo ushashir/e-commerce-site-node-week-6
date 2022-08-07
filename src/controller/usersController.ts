@@ -1,24 +1,89 @@
 import { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { UserInstance } from "../model/users";
-import { createUserSchema, options, updateUserSchema } from "../utils/utils";
+import { signUpUserSchema, options, loginUserSchema } from "../utils/utils";
 
-export async function CreateUser(req: Request, res: Response, next: NextFunction) {
+import { generateToken } from '../utils/utils' 
+
+const User = require('../model/users')
+
+import bcrypt from 'bcrypt';
+
+export async function SignUpUser(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
-  // let todo = { ...req.body, id };
   try {
-    const validationResult = createUserSchema.validate(req.body, options);
-    if (validationResult.error) {
+    const validationUser = signUpUserSchema.validate(req.body, options);
+    if (validationUser.error) {
       return res.status(400).json({
-        error: validationResult.error.details[0].message,
+        error: validationUser.error.details[0].message,
       });
     }
-    const pwHash = await bcrypt.hash
-    const record = await UserInstance.create({ ...req.body, id });
+    const pwHash = await bcrypt.hash(req.body.password,8)
+
+    const duplicateEmail =  await UserInstance.findOne({where: {email: req.body.email}})
+        if(duplicateEmail){
+            res.status(409).json({
+                msg:"Email has be used already"
+            })
+        }
+
+    const record = await UserInstance.create({
+      id: id,
+      fullName: req.body.fullName,
+      gender: req.body.gender,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: req.body.address,
+      password: pwHash,
+    });
+
+    console.log(record)
+
     res.status(201);
     res.json({
       message: "You have successfully created an account",
       record,
+    });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+}
+
+export async function loginUser(req: Request, res: Response, next: NextFunction) {
+  let id = uuidv4();
+  try {
+    const validationResult = loginUserSchema.validate(req.body, options);
+      if (validationResult.error) {
+        return res.status(400).json({
+          error: validationResult.error.details[0].message,
+        });
+      }
+    
+     const User = await UserInstance.findOne({ where: { email:req.body.password } }) as unknown as {[key:string]: string}
+    
+    const { id } = User;
+    const token = generateToken({ id })
+    const validUser = await bcrypt.compare(req.body.password, User.password)
+
+     if (!validUser) {
+      res.status(401).json({
+        message: "Incorrect Password",
+        token,
+      })
+    } 
+
+    if (validUser) {
+      res.status(200).json({
+        message: "Login Successful",
+        token,
+      })
+    } 
+
+    res.status(201);
+    res.json({
+      message: "You have successfully created an account",
+      record: ""
     });
   } catch (error) {
     res.status(500);
@@ -49,7 +114,6 @@ export async function GetUsers(
 }
 
 // Get single User
-
 export async function GetUser(
   req: Request,
   res: Response,
@@ -82,7 +146,7 @@ export async function updateUser(
   try {
     const { id } = req.params;
     const { email, password } = req.body;
-    const validationResult = updateUserSchema.validate(req.body, options);
+    // const validationResult = updateUserSchema.validate(req.body, options);
     const record = await UserInstance.findOne({
       where: {
         id,

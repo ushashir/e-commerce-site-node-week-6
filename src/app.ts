@@ -9,7 +9,7 @@ import indexRouter from './routes/index';
 import productsRouter from './routes/products';
 import usersRouter from './routes/users';
 
-db.sync().then(() => {
+db.sync({force: true}).then(() => {
   console.log('Database connected');
   
 }).catch(err => {

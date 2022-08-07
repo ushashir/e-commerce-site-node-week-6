@@ -1,8 +1,11 @@
 import express, {Request, Response, NextFunction } from 'express';
 var router = express.Router();
 
+import { auth } from '../middleware/auth';
+
 import {
-    CreateUser,
+    SignUpUser,
+    loginUser,
     GetUsers,
     GetUser,
     updateUser,
@@ -10,8 +13,11 @@ import {
 } from '../controller/usersController';
 
 
-/* POST creat user */
-router.post('/api/users', CreateUser);
+/* POST sign up user */
+router.post('/api/users', SignUpUser);
+
+/* POST login user */
+router.post('/api/login', auth, loginUser);
 
 /* GET get all users listing. */
 router.get('/api/users', GetUsers);
@@ -20,10 +26,10 @@ router.get('/api/users', GetUsers);
 router.get('/api/user/id', GetUser);
 
 /* PUT update user. */
-router.put('/api/users', updateUser);
+router.put('/api/users', auth, updateUser);
 
 /* DELETE delete user */
-router.delete('/api/users', deleteUser);
+router.delete('/api/users', auth, deleteUser);
 
 export default router
 

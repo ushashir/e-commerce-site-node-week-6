@@ -12,7 +12,7 @@ const db_config_1 = __importDefault(require("./config/db.config"));
 const index_1 = __importDefault(require("./routes/index"));
 const products_1 = __importDefault(require("./routes/products"));
 const users_1 = __importDefault(require("./routes/users"));
-db_config_1.default.sync().then(() => {
+db_config_1.default.sync({ force: true }).then(() => {
     console.log('Database connected');
 }).catch(err => {
     console.log(err);
