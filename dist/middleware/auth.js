@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.auth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = require("../model/users");
-const User = require('../model/users');
-const secret = process.env.JWT_TOKEN;
+// const User = require('../model/users')
+const secret = process.env.JWT_SECRET;
 async function auth(req, res, next) {
     try {
         const authorization = req.headers.authorization;

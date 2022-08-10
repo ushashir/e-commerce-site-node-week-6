@@ -5,9 +5,10 @@ import { signUpUserSchema, options, loginUserSchema } from "../utils/utils";
 
 import { generateToken } from '../utils/utils' 
 
-const User = require('../model/users')
-
 import bcrypt from 'bcrypt';
+import { ProductInstance } from "../model/products";
+
+// const User = require('../model/users')
 
 export async function SignUpUser(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
@@ -23,7 +24,7 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
     const duplicateEmail =  await UserInstance.findOne({where: {email: req.body.email}})
         if(duplicateEmail){
             res.status(409).json({
-                msg:"Email has be used already"
+                msg:"Email already in use. Kindly fill in another mail"
             })
         }
 
@@ -36,9 +37,7 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       address: req.body.address,
       password: pwHash,
     });
-
-    console.log(record)
-
+    
     res.status(201);
     res.json({
       message: "You have successfully created an account",
@@ -51,7 +50,7 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
 }
 
 export async function loginUser(req: Request, res: Response, next: NextFunction) {
-  let id = uuidv4();
+  const id = uuidv4();
   try {
     const validationResult = loginUserSchema.validate(req.body, options);
       if (validationResult.error) {
@@ -59,17 +58,19 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
           error: validationResult.error.details[0].message,
         });
       }
-    
-     const User = await UserInstance.findOne({ where: { email:req.body.password } }) as unknown as {[key:string]: string}
-    
+
+    const User = await UserInstance.findOne({ where: { email: req.body.email } }) as unknown as { [key: string]: string }
+    console.log(User)
     const { id } = User;
     const token = generateToken({ id })
+    console.log(token)
     const validUser = await bcrypt.compare(req.body.password, User.password)
 
      if (!validUser) {
       res.status(401).json({
         message: "Incorrect Password",
         token,
+        User
       })
     } 
 
@@ -77,6 +78,7 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
       res.status(200).json({
         message: "Login Successful",
         token,
+        User
       })
     } 
 
@@ -100,9 +102,17 @@ export async function GetUsers(
   try {
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
-    const record = await UserInstance.findAll({ where: {}, limit, offset });
+    const record = await UserInstance.findAll({
+      where: {}, limit, offset,
+      include: [{
+        model: ProductInstance,
+        as: 'products'
+      }]
+  });
+    
     res.status(200).json({
       message: "You have successfully retrieved all users",
+      // count: record.count,
       record,
     });
   } catch (error) {

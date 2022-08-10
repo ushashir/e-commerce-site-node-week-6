@@ -2,6 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 
 import db from '../config/db.config';
 
+
 interface ProductsAttributes {
     id: string;
     productName: string;
@@ -12,7 +13,8 @@ interface ProductsAttributes {
     price: number,
     countInStock: number,
     rating: number,
-    numReviews: number
+    numReviews: number,
+    userId: string
 }
 
 export class ProductInstance extends 
@@ -21,7 +23,7 @@ export class ProductInstance extends
 ProductInstance.init(
     {
     id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUIDV4,
             primaryKey: true,
         allowNull:false
         },
@@ -52,9 +54,11 @@ ProductInstance.init(
         },
         numReviews: {
             type: DataTypes.NUMBER,
+        },
+        userId: {
+            type: DataTypes.STRING
         }
     }, {
     sequelize: db,
-    tableName: 'products'
-    
+    tableName: 'products' 
 });

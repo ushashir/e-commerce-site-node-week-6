@@ -4,26 +4,33 @@ import { ProductInstance } from "../model/products";
 
 import { createProductSchema, options} from "../utils/utils";
 
-export async function AddProduct(req: Request, res: Response, next: NextFunction) {
+export async function AddProduct(req: Request | any, res: Response, next: NextFunction) {
   let id = uuidv4();
-  // let todo = { ...req.body, id };
   try {
+    const verified = req.user;
     const validationResult = createProductSchema.validate(req.body, options);
     if (validationResult.error) {
       return res.status(400).json({
         error: validationResult.error.details[0].message,
       });
     }
-    const record = await ProductInstance.create({ ...req.body, id });
-    console.log(record)
+    const record = await ProductInstance.create({
+      id,
+      ...req.body,
+      userId: verified.id
+    });
+
     res.status(201);
     res.json({
       message: "You have successfully added a new product",
       record,
     });
   } catch (error) {
-    res.status(500);
-    console.log(error);
+    res.status(500).json({
+      msg: "failed to add product",
+      route: "/api/products"
+    });
+    console.log(error)
   }
 }
 
@@ -37,14 +44,15 @@ export async function GetProducts(
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
     const record = await ProductInstance.findAll({ where: {}, limit, offset });
-    res.status(200).json({
-      message: "You have successfully retrieved all products",
-      record,
-    });
+    res.render("index",{record})
+    // res.status(200).json({
+    //   message: "You have successfully retrieved all products",
+    //   record,
+    // });
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
-      route: "/read",
+      route: "/api/products/:id",
     });
   }
 }
@@ -56,20 +64,45 @@ export async function GetProduct(
   next: NextFunction
 ) {
   try {
-    const { id } = req.params;
-    const record = await ProductInstance.findOne({
-      where: {
-        id,
-      },
-    });
+    const {id} = req.params;
+    console.log(id)
+    const record = await ProductInstance.findOne({ where: { id } });
     res.status(200).json({
       message: `You have successfully retrieved a product with the id of ${id}`,
+      record
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed to get product"
+    });
+  }
+}
+
+export async function GetUserProducts(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const limit = req.query.limit as number | undefined;
+    const offset = req.query.offset as number | undefined;
+    const record = await ProductInstance.findAll({
+      where: {}, limit, offset,
+      include: [{
+        model: ProductInstance,
+        as: 'products'
+      }]
+    
+    });
+    res.render("index",{record})
+    res.status(200).json({
+      message: "You have successfully retrieved all products",
       record,
     });
   } catch (error) {
     res.status(500).json({
-      message: "failed to get products",
-      route: "/read/:id",
+      message: "failed to get users",
+      route: "/api/products/user",
     });
   }
 }
@@ -85,7 +118,7 @@ export async function updateProduct(
             productName,
             image,
             brand,
-            categories,
+            category,
             description,
             price,
             countInStock,
@@ -107,7 +140,7 @@ export async function updateProduct(
             productName,
             image,
             brand,
-            categories,
+            category,
             description,
             price,
             countInStock,

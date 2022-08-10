@@ -2,15 +2,16 @@ import { DataTypes, Model } from 'sequelize';
 
 import db from '../config/db.config';
 
+import { ProductInstance } from './products'
+
 interface UserAttributes {
-    id: string;
-    fullName: string;
-    gender: string;
-    email: string;
-    phone: string;
+    id: string,
+    fullName: string,
+    gender: string,
+    email: string,
+    phone: string,
     address: string,
-    password: string;
-    
+    password: string,
 }
 
 export class UserInstance extends 
@@ -19,7 +20,7 @@ export class UserInstance extends
 UserInstance.init(
     {
     id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUIDV4,
             primaryKey: true,
         allowNull:false
         },
@@ -28,7 +29,7 @@ UserInstance.init(
         allowNull: false,
             validate: {
             notNull: {
-                msg: "First name is required"
+                msg: "Full name is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -40,7 +41,7 @@ UserInstance.init(
         allowNull: false,
         validate: {
             notNull: {
-                msg: "Last name is required"
+                msg: "Gender is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -49,7 +50,6 @@ UserInstance.init(
         },
     email: {
             type: DataTypes.STRING,
-            // primaryKey: true,
         allowNull: false,
         validate: {
             notNull: {
@@ -65,7 +65,7 @@ UserInstance.init(
         allowNull: false,
             validate: {
             notNull: {
-                msg: "Password is required"
+                msg: "Phone number is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -101,3 +101,13 @@ UserInstance.init(
     tableName: 'users'
     
 });
+
+UserInstance.hasMany(ProductInstance,
+    {
+        foreignKey: "userId",
+        as: "products"
+    });
+ProductInstance.belongsTo(UserInstance, {
+    foreignKey: 'userId',
+    as: 'user'
+})

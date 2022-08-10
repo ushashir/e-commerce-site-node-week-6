@@ -18,21 +18,22 @@ exports.createProductSchema = joi_1.default.object().keys({
     numReviews: joi_1.default.number()
 });
 exports.signUpUserSchema = joi_1.default.object().keys({
-    firstName: joi_1.default.string().required(),
-    lastName: joi_1.default.string().required(),
+    fullName: joi_1.default.string().required(),
+    gender: joi_1.default.string().required(),
     email: joi_1.default.string().trim().lowercase().required(),
-    phoneNumber: joi_1.default.string().required(),
+    phone: joi_1.default.string().required(),
+    address: joi_1.default.string().required(),
     password: joi_1.default.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     confirmPassword: joi_1.default.ref('password')
 }).with('password', 'confirmPassword');
 exports.loginUserSchema = joi_1.default.object().keys({
     email: joi_1.default.string().trim().lowercase().required(),
-    password: joi_1.default.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
-    confirm_password: joi_1.default.ref('password')
-}).with('password', 'confirm_password');
+    password: joi_1.default.string().regex(/^[a-zA-Z0-9]{3,30}$/).required()
+});
+// generate token
 const generateToken = (user) => {
     const pass = process.env.JWT_SECRET;
-    jsonwebtoken_1.default.sign(user, pass, { expiresIn: '7d' });
+    return jsonwebtoken_1.default.sign(user, pass, { expiresIn: '7d' });
 };
 exports.generateToken = generateToken;
 exports.options = {

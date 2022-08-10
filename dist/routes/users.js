@@ -10,13 +10,13 @@ const usersController_1 = require("../controller/usersController");
 /* POST sign up user */
 router.post('/api/users', usersController_1.SignUpUser);
 /* POST login user */
-router.post('/api/login', auth_1.auth, usersController_1.loginUser);
+router.post('/api/login', usersController_1.loginUser);
 /* GET get all users listing. */
 router.get('/api/users', usersController_1.GetUsers);
 /* GET get a single user */
-router.get('/api/user/id', usersController_1.GetUser);
+router.get('/api/user/:id/', usersController_1.GetUser);
 /* PUT update user. */
-router.put('/api/users', auth_1.auth, usersController_1.updateUser);
+router.put('/api/users/:id', auth_1.auth, usersController_1.updateUser);
 /* DELETE delete user */
-router.delete('/api/users', auth_1.auth, usersController_1.deleteUser);
+router.delete('/api/users/:id', auth_1.auth, usersController_1.deleteUser);
 exports.default = router;

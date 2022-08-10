@@ -17,19 +17,19 @@ import {
 router.post('/api/users', SignUpUser);
 
 /* POST login user */
-router.post('/api/login', auth, loginUser);
+router.post('/api/login', loginUser);
 
 /* GET get all users listing. */
 router.get('/api/users', GetUsers);
 
 /* GET get a single user */
-router.get('/api/user/id', GetUser);
+router.get('/api/user/:id/', GetUser);
 
 /* PUT update user. */
-router.put('/api/users', auth, updateUser);
+router.put('/api/users/:id', auth, updateUser);
 
 /* DELETE delete user */
-router.delete('/api/users', auth, deleteUser);
+router.delete('/api/users/:id', auth, deleteUser);
 
 export default router
 

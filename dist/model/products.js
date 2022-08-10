@@ -11,7 +11,7 @@ class ProductInstance extends sequelize_1.Model {
 exports.ProductInstance = ProductInstance;
 ProductInstance.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
     },
@@ -42,6 +42,9 @@ ProductInstance.init({
     },
     numReviews: {
         type: sequelize_1.DataTypes.NUMBER,
+    },
+    userId: {
+        type: sequelize_1.DataTypes.STRING
     }
 }, {
     sequelize: db_config_1.default,

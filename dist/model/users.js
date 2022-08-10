@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserInstance = void 0;
 const sequelize_1 = require("sequelize");
 const db_config_1 = __importDefault(require("../config/db.config"));
+const products_1 = require("./products");
 class UserInstance extends sequelize_1.Model {
 }
 exports.UserInstance = UserInstance;
 UserInstance.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
     },
@@ -20,7 +21,7 @@ UserInstance.init({
         allowNull: false,
         validate: {
             notNull: {
-                msg: "First name is required"
+                msg: "Full name is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -32,7 +33,7 @@ UserInstance.init({
         allowNull: false,
         validate: {
             notNull: {
-                msg: "Last name is required"
+                msg: "Gender is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -41,7 +42,6 @@ UserInstance.init({
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
-        // primaryKey: true,
         allowNull: false,
         validate: {
             notNull: {
@@ -57,7 +57,7 @@ UserInstance.init({
         allowNull: false,
         validate: {
             notNull: {
-                msg: "Password is required"
+                msg: "Phone number is required"
             },
             notEmpty: {
                 msg: "Enter a field"
@@ -91,4 +91,12 @@ UserInstance.init({
 }, {
     sequelize: db_config_1.default,
     tableName: 'users'
+});
+UserInstance.hasMany(products_1.ProductInstance, {
+    foreignKey: "userId",
+    as: "products"
+});
+products_1.ProductInstance.belongsTo(UserInstance, {
+    foreignKey: 'userId',
+    as: 'user'
 });

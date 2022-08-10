@@ -1,29 +1,40 @@
 import express, {Request, Response, NextFunction } from 'express';
 var router = express.Router();
 
-// import { Users } from '../controller/usersController';
+import { auth } from '../middleware/auth'
+
 import {
      AddProduct,
     GetProducts,
     GetProduct,
+    GetUserProducts,
     updateProduct,
     deleteProduct
 } from '../controller/productsController';
 
 /* POST products listing. */
-router.post('/api/products', AddProduct);
+/* ACCESS: PRIVATE only registered users*/
+router.post('/api/products', auth, AddProduct);
 
 /* GET get all products listing. */
-router.get('/api/products', GetProducts);
+/* ACCESS: PUBLIC only registered users*/
+router.get('/api/products/', GetProducts);
+
+/* GET get all products listing by user */
+/* ACCESS: PRIVATE only registered users*/
+router.get('/api/products/user', auth, GetUserProducts);
 
 /* GET products by id listing. */
-router.get('/api/products/id', GetProduct);
+/* ACCESS: PUBLIC */
+router.get('/api/products/:id', GetProduct);
 
 /* PUT edit products listing. */
-router.put('/api/products', updateProduct);
+/* ACCESS: PRIVATE only registered user*/
+router.put('/api/products/:id', auth, updateProduct);
 
-/* DELETE products listing. */
-router.delete('/api/products', deleteProduct);
+/* DESC; DELETE delete products listing. O*/
+/* ACCESS: PRIVATE only registered users*/
+router.delete('/api/products/:id', auth, deleteProduct);
 
 export default router
 

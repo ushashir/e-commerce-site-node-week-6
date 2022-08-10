@@ -9,7 +9,7 @@ import indexRouter from './routes/index';
 import productsRouter from './routes/products';
 import usersRouter from './routes/users';
 
-db.sync({force: true}).then(() => {
+db.sync().then(() => {
   console.log('Database connected');
   
 }).catch(err => {
@@ -19,7 +19,7 @@ db.sync({force: true}).then(() => {
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views', ".."));
+app.set('views', path.join(__dirname,"..",'views',));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));

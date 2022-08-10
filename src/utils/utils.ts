@@ -15,13 +15,14 @@ export const createProductSchema = Joi.object().keys
       numReviews: Joi.number()
 
     })
-
+ 
 export const signUpUserSchema = Joi.object().keys
     ({
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        fullName: Joi.string().required(),
+        gender: Joi.string().required(),
         email: Joi.string().trim().lowercase().required(),
-        phoneNumber: Joi.string().required(),
+        phone: Joi.string().required(),
+        address: Joi.string().required(),
         password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
         confirmPassword: Joi.ref('password')
     }).with('password', 'confirmPassword')
@@ -29,13 +30,13 @@ export const signUpUserSchema = Joi.object().keys
 export const loginUserSchema = Joi.object().keys
     ({
         email: Joi.string().trim().lowercase().required(),
-        password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
-        confirm_password: Joi.ref('password')
-    }).with('password', 'confirm_password')
+        password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required()
+    })
 
-export const generateToken = (user: { [key: string]: unknown }) => {
+    // generate token
+export const generateToken = (user:{[key:string]:unknown}):unknown => {
   const pass = process.env.JWT_SECRET as string
-  jwt.sign(user,pass, {expiresIn:'7d'})
+  return jwt.sign(user,pass, {expiresIn:'7d'})
 }
 
 export const options = {
