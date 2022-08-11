@@ -7,6 +7,9 @@ const express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 const auth_1 = require("../middleware/auth");
 const productsController_1 = require("../controller/productsController");
+// import { staticAddProduct } from '../controller/usersController';
+// static routes
+router.get('./addproduct', productsController_1.staticAddProduct);
 /* POST products listing. */
 /* ACCESS: PRIVATE only registered users*/
 router.post('/api/products', auth_1.auth, productsController_1.AddProduct);

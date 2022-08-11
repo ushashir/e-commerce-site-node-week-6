@@ -10,10 +10,10 @@ interface ProductsAttributes {
     brand: string,
     category: string,
     description: string,
-    price: number,
-    countInStock: number,
-    rating: number,
-    numReviews: number,
+    price: string,
+    countInStock: string,
+    rating: string,
+    numReviews: string,
     userId: string
 }
 
@@ -44,16 +44,16 @@ ProductInstance.init(
             type: DataTypes.STRING,
         },
         price: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.STRING,
         },
          countInStock: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.STRING,
         },
          rating: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.STRING,
         },
         numReviews: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.STRING,
         },
         userId: {
             type: DataTypes.STRING

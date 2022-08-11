@@ -32,16 +32,16 @@ ProductInstance.init({
         type: sequelize_1.DataTypes.STRING,
     },
     price: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.STRING,
     },
     countInStock: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.STRING,
     },
     rating: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.STRING,
     },
     numReviews: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.STRING,
     },
     userId: {
         type: sequelize_1.DataTypes.STRING

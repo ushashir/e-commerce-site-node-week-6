@@ -10,7 +10,7 @@ const usersController_1 = require("../controller/usersController");
 /* POST sign up user */
 router.post('/api/users', usersController_1.SignUpUser);
 /* POST login user */
-router.post('/api/login', usersController_1.loginUser);
+router.post('/login', usersController_1.loginUser);
 /* GET get all users listing. */
 router.get('/api/users', usersController_1.GetUsers);
 /* GET get a single user */

@@ -10,7 +10,6 @@ const utils_1 = require("../utils/utils");
 const utils_2 = require("../utils/utils");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const products_1 = require("../model/products");
-// const User = require('../model/users')
 async function SignUpUser(req, res, next) {
     let id = (0, uuid_1.v4)();
     try {
@@ -37,10 +36,11 @@ async function SignUpUser(req, res, next) {
             password: pwHash,
         });
         res.status(201);
-        res.json({
-            message: "You have successfully created an account",
-            record,
-        });
+        res.redirect('/api/products');
+        // res.json({
+        //   message: "You have successfully created an account",
+        //   record,
+        // });
     }
     catch (error) {
         res.status(500);
@@ -58,10 +58,10 @@ async function loginUser(req, res, next) {
             });
         }
         const User = await users_1.UserInstance.findOne({ where: { email: req.body.email } });
-        console.log(User);
+        // console.log(User)
         const { id } = User;
         const token = (0, utils_2.generateToken)({ id });
-        console.log(token);
+        // console.log(token)
         const validUser = await bcrypt_1.default.compare(req.body.password, User.password);
         if (!validUser) {
             res.status(401).json({
@@ -71,11 +71,12 @@ async function loginUser(req, res, next) {
             });
         }
         if (validUser) {
-            res.status(200).json({
-                message: "Login Successful",
-                token,
-                User
-            });
+            res.redirect("login");
+            // res.status(200).json({
+            //   message: "Login Successful",
+            //   token,
+            //   User
+            // })
         }
         res.status(201);
         res.json({
@@ -94,18 +95,19 @@ async function GetUsers(req, res, next) {
     try {
         const limit = req.query.limit;
         const offset = req.query.offset;
-        const record = await users_1.UserInstance.findAll({
+        const record = await users_1.UserInstance.findAndCountAll({
             where: {}, limit, offset,
             include: [{
                     model: products_1.ProductInstance,
                     as: 'products'
                 }]
         });
-        res.status(200).json({
-            message: "You have successfully retrieved all users",
-            // count: record.count,
-            record,
-        });
+        res.render('viewUsers', record.rows);
+        // res.status(200).json({
+        //   message: "You have successfully retrieved all users",
+        //   count: record.count,
+        //   record: record.rows
+        // });
     }
     catch (error) {
         res.status(500).json({

@@ -4,3 +4,17 @@ block content
   h1= message
   h2= error.status
   pre #{error.stack}
+
+
+
+    <%for(let product of record){ %>
+    
+      <p>
+        <%=product.productName%>
+      </p>
+    
+      <li>
+        <%=product.price%>
+      </li>
+    
+      <%}%>

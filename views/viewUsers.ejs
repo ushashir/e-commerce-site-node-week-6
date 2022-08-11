@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Nawill Stores | Homepage </title>
+    <link rel="stylesheet" href="/src/style.css">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Welcome to Nawill Online store">
+    <meta content="Eccomerce, Online Store, Shopping" name="keywords">
+</head>
+
+<body>
+    <!-- Move to up button -->
+    <div class="scroll-button">
+        <a href="#home"><i class="fas fa-arrow-up"></i></a>
+    </div>
+    <!-- navgaition menu -->
+    <nav>
+        <div class="navbar">
+            <div class="logo"><a href="index.html">Nawill Stores</a></div>
+            <ul class="menu">
+                <li><a href="/api/products">Home</a></li>
+                <li><a href="#services">Products</a></li>
+                <li><a href="#about">Login</a></li>
+                <li><a href="#skills">SignUp</a></li>
+                <div class="cancel-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+            </ul>
+            <div class="media-icons">
+                <!-- <a href="https://github.com/ushashir/"><i class="fab fa-github-f"></i></a> -->
+                <a href="https://github.com/ushashir/"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/ushashir/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/usha_shir"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/ushashir"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.youtube.com/channel/UCggoM2vJLpUE2U_UOak1a7w"><i class="fab fa-youtube"></i></a>
+                <a href="instagram.com/ushahembashir/"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Shops Section Start -->
+    <section class="services" id="services">
+        <div class="content">
+            <div class="title"><span>Our Store</span></div>
+        </div>
+    </section>
+
+    <section>
+        
+            <h2>Registered Users</h2>
+    
+            <table>
+               
+                <tr>
+                    <th>Full Name</th>
+                    <th>Gender</th>
+                    <th>email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+        
+                </tr>
+                <%for(let user of record){ %>
+                <tr>
+                    <td><%=user.fullName%></td>
+                    <td><%=user.gender%></td>
+                    <td><%=user.email%></td>
+                    <td><%=user.phone%></td>
+                    <td><%=user.address%></td>
+                </tr>
+                <%}%>
+            </table>
+
+            <style>
+                table {
+                    font-family: arial, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+            
+                td,
+                th {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
+            
+                tr:nth-child(even) {
+                    background-color: #dddddd;
+                }
+            </style>
+       
+
+    </section>
+
+    <!-- Contact Me section Start -->
+    <!-- Contact Me section Start -->
+    <section class="contact" id="contact">
+        <div class="content">
+            <div class="title"><span>Contact Me</span></div>
+            <div class="text">
+                <div class="button">
+                    <button> <a href="tel:+2349018515257">Call</a> </button>
+                </div>
+                or
+                <div class="button">
+                    <button> <a href="mailto:ushahembashir@gmail.com">Send me a Message</a> </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section Start -->
+
+    <footer>
+        <div class="text">
+            <span>Nawill Stores| &#169; 2022 All Rights Reserved</span>
+        </div>
+    </footer>
+
+    <script src="/src/script.js"></script>
+</body>
+
+</html>

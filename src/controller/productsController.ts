@@ -4,6 +4,10 @@ import { ProductInstance } from "../model/products";
 
 import { createProductSchema, options} from "../utils/utils";
 
+export function staticAddProduct(req: Request, res: Response, next: NextFunction) {
+  res.render('addProduct')
+}
+
 export async function AddProduct(req: Request | any, res: Response, next: NextFunction) {
   let id = uuidv4();
   try {
@@ -43,12 +47,12 @@ export async function GetProducts(
   try {
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
-    const record = await ProductInstance.findAll({ where: {}, limit, offset });
-    res.render("index",{record})
-    // res.status(200).json({
+    const record = await ProductInstance.findAndCountAll({ where: {}, limit, offset });
+    res.status(200).render("index",{record: record.rows})
+    // json({
     //   message: "You have successfully retrieved all products",
     //   record,
-    // });
+    // })
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
@@ -69,7 +73,7 @@ export async function GetProduct(
     const record = await ProductInstance.findOne({ where: { id } });
     res.status(200).json({
       message: `You have successfully retrieved a product with the id of ${id}`,
-      record
+      record,
     });
   } catch (error) {
     res.status(500).json({

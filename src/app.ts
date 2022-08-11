@@ -5,9 +5,11 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import db from './config/db.config';
 
+
 import indexRouter from './routes/index';
 import productsRouter from './routes/products';
 import usersRouter from './routes/users';
+import staticRouter from './routes/static';
 
 db.sync().then(() => {
   console.log('Database connected');
@@ -26,11 +28,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join('public')));
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/', productsRouter);
+app.use('/', staticRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next) {

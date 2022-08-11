@@ -9,4 +9,8 @@ var router = express_1.default.Router();
 router.get('/', function (req, res, next) {
     res.render('index', { title: 'Express' });
 });
+/* GET lon page. */
+router.get('/api/login', function (req, res, next) {
+    res.render('login', { title: 'Express' });
+});
 exports.default = router;

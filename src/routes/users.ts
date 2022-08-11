@@ -12,12 +12,11 @@ import {
     deleteUser
 } from '../controller/usersController';
 
-
 /* POST sign up user */
 router.post('/api/users', SignUpUser);
 
 /* POST login user */
-router.post('/api/login', loginUser);
+router.post('/login', loginUser);
 
 /* GET get all users listing. */
 router.get('/api/users', GetUsers);
@@ -30,6 +29,8 @@ router.put('/api/users/:id', auth, updateUser);
 
 /* DELETE delete user */
 router.delete('/api/users/:id', auth, deleteUser);
+
+
 
 export default router
 

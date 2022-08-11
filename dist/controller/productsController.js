@@ -1,9 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.GetUserProducts = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
+exports.deleteProduct = exports.updateProduct = exports.GetUserProducts = exports.GetProduct = exports.GetProducts = exports.AddProduct = exports.staticAddProduct = void 0;
 const uuid_1 = require("uuid");
 const products_1 = require("../model/products");
 const utils_1 = require("../utils/utils");
+function staticAddProduct(req, res, next) {
+    res.render('addProduct');
+}
+exports.staticAddProduct = staticAddProduct;
 async function AddProduct(req, res, next) {
     let id = (0, uuid_1.v4)();
     try {
@@ -39,12 +43,12 @@ async function GetProducts(req, res, next) {
     try {
         const limit = req.query.limit;
         const offset = req.query.offset;
-        const record = await products_1.ProductInstance.findAll({ where: {}, limit, offset });
-        res.render("index", { record });
-        // res.status(200).json({
+        const record = await products_1.ProductInstance.findAndCountAll({ where: {}, limit, offset });
+        res.status(200).render("index", { record: record.rows });
+        // json({
         //   message: "You have successfully retrieved all products",
         //   record,
-        // });
+        // })
     }
     catch (error) {
         res.status(500).json({
@@ -62,7 +66,7 @@ async function GetProduct(req, res, next) {
         const record = await products_1.ProductInstance.findOne({ where: { id } });
         res.status(200).json({
             message: `You have successfully retrieved a product with the id of ${id}`,
-            record
+            record,
         });
     }
     catch (error) {

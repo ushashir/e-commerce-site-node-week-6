@@ -7,9 +7,7 @@ import { generateToken } from '../utils/utils'
 
 import bcrypt from 'bcrypt';
 import { ProductInstance } from "../model/products";
-
-// const User = require('../model/users')
-
+  
 export async function SignUpUser(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
   try {
@@ -39,10 +37,11 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
     });
     
     res.status(201);
-    res.json({
-      message: "You have successfully created an account",
-      record,
-    });
+    res.redirect('/api/products')
+    // res.json({
+    //   message: "You have successfully created an account",
+    //   record,
+    // });
   } catch (error) {
     res.status(500);
     console.log(error);
@@ -60,10 +59,10 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
       }
 
     const User = await UserInstance.findOne({ where: { email: req.body.email } }) as unknown as { [key: string]: string }
-    console.log(User)
+    // console.log(User)
     const { id } = User;
     const token = generateToken({ id })
-    console.log(token)
+    // console.log(token)
     const validUser = await bcrypt.compare(req.body.password, User.password)
 
      if (!validUser) {
@@ -75,11 +74,12 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
     } 
 
     if (validUser) {
-      res.status(200).json({
-        message: "Login Successful",
-        token,
-        User
-      })
+      res.redirect("login")
+      // res.status(200).json({
+      //   message: "Login Successful",
+      //   token,
+      //   User
+      // })
     } 
 
     res.status(201);
@@ -102,19 +102,19 @@ export async function GetUsers(
   try {
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
-    const record = await UserInstance.findAll({
+    const record = await UserInstance.findAndCountAll({
       where: {}, limit, offset,
       include: [{
         model: ProductInstance,
         as: 'products'
       }]
   });
-    
-    res.status(200).json({
-      message: "You have successfully retrieved all users",
-      // count: record.count,
-      record,
-    });
+    res.render('viewUsers', record.rows)
+    // res.status(200).json({
+    //   message: "You have successfully retrieved all users",
+    //   count: record.count,
+    //   record: record.rows
+    // });
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",

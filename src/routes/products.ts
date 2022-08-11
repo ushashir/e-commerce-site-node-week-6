@@ -4,6 +4,7 @@ var router = express.Router();
 import { auth } from '../middleware/auth'
 
 import {
+    staticAddProduct,
      AddProduct,
     GetProducts,
     GetProduct,
@@ -11,6 +12,10 @@ import {
     updateProduct,
     deleteProduct
 } from '../controller/productsController';
+// import { staticAddProduct } from '../controller/usersController';
+
+// static routes
+router.get('./addproduct', staticAddProduct)
 
 /* POST products listing. */
 /* ACCESS: PRIVATE only registered users*/
