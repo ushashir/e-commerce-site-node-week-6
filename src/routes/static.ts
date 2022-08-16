@@ -19,7 +19,7 @@ import {
 router.get('/login', login)
 router.get('/signup', signUp)
 
-router.get('/index', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     let record = await GetProducts(req, res, next)
     res.render("index",{record})
 });
