@@ -19,9 +19,9 @@ import {
 router.get('/login', login)
 router.get('/signup', signUp)
 
-router.get('/home', async (req, res, next) => {
+router.get('/index', async (req, res, next) => {
     let record = await GetProducts(req, res, next)
-    res.render("home",{record})
+    res.render("index",{record})
 });
 
 router.get('/dashboard', async (req, res, next) => {

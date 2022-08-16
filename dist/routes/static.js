@@ -10,9 +10,9 @@ const productsController_1 = require("../controller/productsController");
 // static routes
 router.get('/login', staticController_1.login);
 router.get('/signup', staticController_1.signUp);
-router.get('/home', async (req, res, next) => {
+router.get('/index', async (req, res, next) => {
     let record = await (0, productsController_1.GetProducts)(req, res, next);
-    res.render("home", { record });
+    res.render("index", { record });
 });
 router.get('/dashboard', async (req, res, next) => {
     let record = await (0, productsController_1.GetProducts)(req, res, next);
