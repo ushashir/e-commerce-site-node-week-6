@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.loginUser = exports.SignUpUser = void 0;
+exports.logout = exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.loginUser = exports.SignUpUser = void 0;
 const uuid_1 = require("uuid");
 const users_1 = require("../model/users");
 const utils_1 = require("../utils/utils");
@@ -71,8 +71,20 @@ async function loginUser(req, res, next) {
             });
         }
         if (validUser) {
-            res.redirect("login");
-            // res.status(200).json({
+            res
+                .status(200)
+                .cookie("token", token, {
+                maxAge: 1000 * 60 * 60 * 24 * 7,
+                sameSite: "strict",
+                httpOnly: true,
+            })
+                .cookie("user", User.id, {
+                maxAge: 1000 * 60 * 60 * 24 * 7,
+                sameSite: "strict",
+                httpOnly: true,
+            });
+            res.redirect("/dashboard");
+            //   .json({
             //   message: "Login Successful",
             //   token,
             //   User
@@ -102,7 +114,7 @@ async function GetUsers(req, res, next) {
                     as: 'products'
                 }]
         });
-        res.render('viewUsers', record.rows);
+        res.status(200).render('index', { record: record.rows });
         // res.status(200).json({
         //   message: "You have successfully retrieved all users",
         //   count: record.count,
@@ -143,7 +155,6 @@ async function updateUser(req, res, next) {
     try {
         const { id } = req.params;
         const { email, password } = req.body;
-        // const validationResult = updateUserSchema.validate(req.body, options);
         const record = await users_1.UserInstance.findOne({
             where: {
                 id,
@@ -177,7 +188,7 @@ async function deleteUser(req, res, next) {
         const record = await users_1.UserInstance.findOne({ where: { id } });
         if (!record) {
             return res.status(404).json({
-                msg: "Cannot find Todo"
+                msg: "Cannot find Product"
             });
         }
         const deletedRecord = await record.destroy();
@@ -193,3 +204,11 @@ async function deleteUser(req, res, next) {
     }
 }
 exports.deleteUser = deleteUser;
+async function logout(req, res) {
+    res.clearCookie("token");
+    // res.status(200).json({
+    //   message: "You have successfully loggedout"
+    // })
+    res.redirect('/login');
+}
+exports.logout = logout;

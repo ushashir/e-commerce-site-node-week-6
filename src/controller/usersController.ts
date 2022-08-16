@@ -25,7 +25,6 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
                 msg:"Email already in use. Kindly fill in another mail"
             })
         }
-
     const record = await UserInstance.create({
       id: id,
       fullName: req.body.fullName,
@@ -57,7 +56,6 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
           error: validationResult.error.details[0].message,
         });
       }
-
     const User = await UserInstance.findOne({ where: { email: req.body.email } }) as unknown as { [key: string]: string }
     // console.log(User)
     const { id } = User;
@@ -74,8 +72,20 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
     } 
 
     if (validUser) {
-      res.redirect("login")
-      // res.status(200).json({
+      res
+        .status(200)
+        .cookie("token", token, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          sameSite: "strict",
+          httpOnly: true,
+        })
+        .cookie("user", User.id, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          sameSite: "strict",
+          httpOnly: true,
+        })
+        res.redirect("/dashboard")
+      //   .json({
       //   message: "Login Successful",
       //   token,
       //   User
@@ -109,7 +119,7 @@ export async function GetUsers(
         as: 'products'
       }]
   });
-    res.render('viewUsers', record.rows)
+    res.status(200).render('index', {record: record.rows})
     // res.status(200).json({
     //   message: "You have successfully retrieved all users",
     //   count: record.count,
@@ -156,7 +166,6 @@ export async function updateUser(
   try {
     const { id } = req.params;
     const { email, password } = req.body;
-    // const validationResult = updateUserSchema.validate(req.body, options);
     const record = await UserInstance.findOne({
       where: {
         id,
@@ -195,7 +204,7 @@ export async function deleteUser(
     const record = await UserInstance.findOne({ where: { id } })
     if (!record) {
       return res.status(404).json({
-        msg:"Cannot find Todo"
+        msg: "Cannot find Product"
       })
     }
     const deletedRecord = await record.destroy();
@@ -209,4 +218,13 @@ export async function deleteUser(
       route: "/delete/:id",
     });
   }
+}
+
+export async function logout(req: Request, res: Response) {
+  res.clearCookie("token");
+  // res.status(200).json({
+  //   message: "You have successfully loggedout"
+  // })
+  res.redirect('/login');
+  
 }

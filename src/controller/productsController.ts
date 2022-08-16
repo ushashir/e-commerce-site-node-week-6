@@ -47,8 +47,9 @@ export async function GetProducts(
   try {
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
-    const record = await ProductInstance.findAndCountAll({ where: {}, limit, offset });
-    res.status(200).render("index",{record: record.rows})
+    const record = await ProductInstance.findAll({ where: {}, limit, offset });
+    // res.render("index", { record: record.rows })
+    return record;
     // json({
     //   message: "You have successfully retrieved all products",
     //   record,

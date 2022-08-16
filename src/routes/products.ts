@@ -23,7 +23,10 @@ router.post('/api/products', auth, AddProduct);
 
 /* GET get all products listing. */
 /* ACCESS: PUBLIC only registered users*/
-router.get('/api/products/', GetProducts);
+router.get('/api/products', async  (req, res, next) => {
+    let record = await GetProducts(req, res, next)
+    res.render("index",{record})
+});
 
 /* GET get all products listing by user */
 /* ACCESS: PRIVATE only registered users*/

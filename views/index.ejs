@@ -60,21 +60,15 @@
         <%for(let product of record){ %>
         <div class="box">
             <h2><%=product.productName%></h2>
-            <img src="" alt="">
-          <%=product.image%>
-          <h4><%=product.price%></h4>
+            <img src="<%=product.image%>" alt="" height="200px", width="200px">
+          
+          <h4>N<%=product.price%></h4>
           <p><%=product.description%></p>
-   
+
+          <div class="project-buttons"> <br>
+          </div>
   </div>
   <%}%>
-
-
-
-          
-          
-
-
-
 
       </div>
     </div>
@@ -105,6 +99,7 @@
   </footer>
 
   <script src="/src/script.js"></script>
+  
 </body>
 
 </html>
