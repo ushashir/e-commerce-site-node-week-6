@@ -80,13 +80,13 @@ async function loginUser(req, res, next) {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 sameSite: "strict",
                 httpOnly: true,
+            })
+                //  res.redirect("/dashboard")
+                .json({
+                message: "Login Successful",
+                token,
+                User
             });
-            res.redirect("/dashboard");
-            //   .json({
-            //   message: "Login Successful",
-            //   token,
-            //   User
-            // })
         }
         res.status(201);
         res.json({

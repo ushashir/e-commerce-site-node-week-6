@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 // import { Link } from 'react-router-dom';
-import axios from "axios";
+import axios from "../api/axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-    const [loginErr, setLoginErr] = useState("");
-
+  const [loginErr, setLoginErr] = useState("");
   console.log(email, password);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    loginErr("")
+  }
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post("users/login", {
+        const response = await axios.post("api/login", {
           email: email,
           password: password,
         });
+        console.log(response)
       } catch (error) {
         setLoginErr(error.response.data.msg);
       }
@@ -28,7 +33,7 @@ const Login = () => {
         <label>Email</label>
         <input
           type={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmail}
           value={email}
           required
         ></input>
@@ -38,7 +43,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         ></input>
-        <button>Submit</button>
+        <button onClick={handleSubmit}>Submit</button>
       </form>
     </div>
   );

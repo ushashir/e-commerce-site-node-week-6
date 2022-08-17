@@ -9,6 +9,7 @@ const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const db_config_1 = __importDefault(require("./config/db.config"));
+const cors_1 = __importDefault(require("cors"));
 const index_1 = __importDefault(require("./routes/index"));
 const products_1 = __importDefault(require("./routes/products"));
 const users_1 = __importDefault(require("./routes/users"));
@@ -20,8 +21,7 @@ db_config_1.default.sync().then(() => {
 });
 var app = (0, express_1.default)();
 // view engine setup
-app.set('views', path_1.default.join(__dirname, "..", 'views'));
-app.set('view engine', 'ejs');
+app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));

@@ -82,12 +82,12 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
           sameSite: "strict",
           httpOnly: true,
         })
-         res.redirect("/dashboard")
-      //   .json({
-      //   message: "Login Successful",
-      //   token,
-      //   User
-      // })
+        //  res.redirect("/dashboard")
+        .json({
+        message: "Login Successful",
+        token,
+        User
+      })
     } 
 
     res.status(201);
