@@ -36,7 +36,7 @@ router.get('/index', async (req, res, next) => {
     res.render("index",{record})
 });
 
-router.get('/dashboard', async (req, res, next) => {
+router.get('/dashboard', auth, async (req, res, next) => {
     let record = await GetProducts(req, res, next)
     res.render("dashboard",{record})
 });

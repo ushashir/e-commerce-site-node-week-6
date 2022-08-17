@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 const productsController_1 = require("../controller/productsController");
+const auth_1 = require("../middleware/auth");
 const staticController_1 = require("../controller/staticController");
 /* GET home page. */
 // router.get('/', function(req: Request, res: Response, next: NextFunction) {
@@ -22,7 +23,7 @@ router.get('/index', async (req, res, next) => {
     let record = await (0, productsController_1.GetProducts)(req, res, next);
     res.render("index", { record });
 });
-router.get('/dashboard', async (req, res, next) => {
+router.get('/dashboard', auth_1.auth, async (req, res, next) => {
     let record = await (0, productsController_1.GetProducts)(req, res, next);
     res.render("dashboard", { record });
 });
