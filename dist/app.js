@@ -12,7 +12,7 @@ const db_config_1 = __importDefault(require("./config/db.config"));
 const index_1 = __importDefault(require("./routes/index"));
 const products_1 = __importDefault(require("./routes/products"));
 const users_1 = __importDefault(require("./routes/users"));
-const static_1 = __importDefault(require("./routes/static"));
+// import staticRouter from './routes/static';
 db_config_1.default.sync().then(() => {
     console.log('Database connected');
 }).catch(err => {
@@ -30,7 +30,7 @@ app.use(express_1.default.static(path_1.default.join('public')));
 app.use('/', index_1.default);
 app.use('/', users_1.default);
 app.use('/', products_1.default);
-app.use('/', static_1.default);
+// app.use('/', staticRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));

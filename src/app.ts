@@ -9,7 +9,7 @@ import db from './config/db.config';
 import indexRouter from './routes/index';
 import productsRouter from './routes/products';
 import usersRouter from './routes/users';
-import staticRouter from './routes/static';
+// import staticRouter from './routes/static';
 
 db.sync().then(() => {
   console.log('Database connected');
@@ -33,7 +33,7 @@ app.use(express.static(path.join('public')));
 app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/', productsRouter);
-app.use('/', staticRouter);
+// app.use('/', staticRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next) {
