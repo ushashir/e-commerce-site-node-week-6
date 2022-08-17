@@ -2,44 +2,38 @@ import express, { Request, Response, NextFunction } from 'express';
 
 var router = express.Router();
 
-import {
-    GetProducts
-} from '../controller/productsController';
+import { AddProduct, GetProducts } from '../controller/productsController';
+
+import { SignUpUser,loginUser, RenderLoggedUserDashboard } from '../controller/usersController';
 
 import { auth } from '../middleware/auth';
 
-import {
-    login,
-    signUp,
-    home,
-    dashboard,
-    addNewProduct,
-    
-} from '../controller/staticController';
-
 /* GET home page. */
-// router.get('/', function(req: Request, res: Response, next: NextFunction) {
-//   res.render('index', { title: 'Express' });
-// });
-
 router.get('/', async (req, res, next) => {
     let record = await GetProducts(req, res, next)
-    res.render("index",{record})
+  res.render("index", {
+    title: "home page",
+    record
+  })
 });
 
-// static routes
-router.get('/login', login)
-router.get('/signup', signUp)
-
-router.get('/index', async (req, res, next) => {
-    let record = await GetProducts(req, res, next)
-    res.render("index",{record})
+/* GET / POST signup page. */
+router.get('/signup', function(req: Request, res: Response, next: NextFunction) {
+  res.render('signup', { title: 'sign up page' });
 });
+router.post('/signup', SignUpUser);
 
-router.get('/dashboard', auth, async (req, res, next) => {
-    let record = await GetProducts(req, res, next)
-    res.render("dashboard",{record})
+/* GET POST login page. */
+router.get('/login', function(req: Request, res: Response, next: NextFunction) {
+  res.render('login', { title: 'login page' });
 });
-router.get('/add-new-product', addNewProduct);
+router.post('/login', RenderLoggedUserDashboard);
+
+/* GET POST products */
+router.get('/add/products', async (req, res, next) => {
+    res.render("addProduct",{title: "add products"})
+});
+router.post('/add/products', AddProduct);
 
 export default router
+

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.loginUser = exports.SignUpUser = void 0;
+exports.logout = exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.RenderLoggedUserDashboard = exports.loginUser = exports.SignUpUser = void 0;
 const uuid_1 = require("uuid");
 const users_1 = require("../model/users");
 const utils_1 = require("../utils/utils");
@@ -36,11 +36,11 @@ async function SignUpUser(req, res, next) {
             password: pwHash,
         });
         res.status(201);
-        res.redirect('/api/products');
-        // res.json({
-        //   message: "You have successfully created an account",
-        //   record,
-        // });
+        // res.redirect('/api/products')
+        res.json({
+            message: "You have successfully created an account",
+            record,
+        });
     }
     catch (error) {
         res.status(500);
@@ -71,14 +71,12 @@ async function loginUser(req, res, next) {
             });
         }
         if (validUser) {
-            res
-                .status(200)
-                .cookie("token", token, {
+            res.cookie("token", token, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 sameSite: "strict",
                 httpOnly: true,
-            })
-                .cookie("user", User.id, {
+            });
+            res.cookie("id", id, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 sameSite: "strict",
                 httpOnly: true,
@@ -102,6 +100,25 @@ async function loginUser(req, res, next) {
     }
 }
 exports.loginUser = loginUser;
+// function to log user to dashboard
+async function RenderLoggedUserDashboard(req, res, next) {
+    let id = req.cookies.id;
+    try {
+        const record = await users_1.UserInstance.findOne({ where: { id },
+            include: [{
+                    model: products_1.ProductInstance,
+                    as: 'products'
+                }]
+        });
+        res.render('dashboard', { record });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "error, something went wrong"
+        });
+    }
+}
+exports.RenderLoggedUserDashboard = RenderLoggedUserDashboard;
 // Get all users
 async function GetUsers(req, res, next) {
     try {
@@ -114,17 +131,17 @@ async function GetUsers(req, res, next) {
                     as: 'products'
                 }]
         });
-        res.status(200).render('index', { record: record.rows });
-        // res.status(200).json({
-        //   message: "You have successfully retrieved all users",
-        //   count: record.count,
-        //   record: record.rows
-        // });
+        // res.status(200).render('index', {record: record.rows})
+        res.status(200).json({
+            message: "You have successfully retrieved all users",
+            count: record.count,
+            record: record.rows
+        });
     }
     catch (error) {
         res.status(500).json({
             message: "failed to get users",
-            route: "/read",
+            route: "/api/users",
         });
     }
 }

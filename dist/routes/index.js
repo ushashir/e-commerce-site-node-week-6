@@ -6,26 +6,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 const productsController_1 = require("../controller/productsController");
-const auth_1 = require("../middleware/auth");
-const staticController_1 = require("../controller/staticController");
+const usersController_1 = require("../controller/usersController");
 /* GET home page. */
-// router.get('/', function(req: Request, res: Response, next: NextFunction) {
-//   res.render('index', { title: 'Express' });
-// });
 router.get('/', async (req, res, next) => {
     let record = await (0, productsController_1.GetProducts)(req, res, next);
-    res.render("index", { record });
+    res.render("index", {
+        title: "home page",
+        record
+    });
 });
-// static routes
-router.get('/login', staticController_1.login);
-router.get('/signup', staticController_1.signUp);
-router.get('/index', async (req, res, next) => {
-    let record = await (0, productsController_1.GetProducts)(req, res, next);
-    res.render("index", { record });
+/* GET / POST signup page. */
+router.get('/signup', function (req, res, next) {
+    res.render('signup', { title: 'sign up page' });
 });
-router.get('/dashboard', auth_1.auth, async (req, res, next) => {
-    let record = await (0, productsController_1.GetProducts)(req, res, next);
-    res.render("dashboard", { record });
+router.post('/signup', usersController_1.SignUpUser);
+/* GET POST login page. */
+router.get('/login', function (req, res, next) {
+    res.render('login', { title: 'login page' });
 });
-router.get('/add-new-product', staticController_1.addNewProduct);
+router.post('/login', usersController_1.RenderLoggedUserDashboard);
+/* GET POST products */
+router.get('/add/products', async (req, res, next) => {
+    res.render("addProduct", { title: "add products" });
+});
+router.post('/add/products', productsController_1.AddProduct);
 exports.default = router;

@@ -15,7 +15,7 @@ import {
 // import { staticAddProduct } from '../controller/usersController';
 
 // static routes
-router.get('./addproduct', staticAddProduct)
+router.get('./addproduct', auth, staticAddProduct)
 
 /* POST products listing. */
 /* ACCESS: PRIVATE only registered users*/
@@ -25,7 +25,10 @@ router.post('/api/products', auth, AddProduct);
 /* ACCESS: PUBLIC only registered users*/
 router.get('/api/products', async  (req, res, next) => {
     let record = await GetProducts(req, res, next)
-    res.render("index",{record})
+    res.status(200).json({
+        message: "You have successfully retrieved all products",
+        record,
+    })
 });
 
 /* GET get all products listing by user */
@@ -38,11 +41,11 @@ router.get('/api/products/:id', GetProduct);
 
 /* PUT edit products listing. */
 /* ACCESS: PRIVATE only registered user*/
-router.put('/api/products/:id', auth, updateProduct);
+router.put('/api/products/put/:id', auth, updateProduct);
 
 /* DESC; DELETE delete products listing. O*/
 /* ACCESS: PRIVATE only registered users*/
-router.delete('/api/products/:id', auth, deleteProduct);
+router.delete('/api/products/delete/:id', auth, deleteProduct);
 
 export default router
 

@@ -36,11 +36,11 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
     });
     
     res.status(201);
-    res.redirect('/api/products')
-    // res.json({
-    //   message: "You have successfully created an account",
-    //   record,
-    // });
+    // res.redirect('/api/products')
+    res.json({
+      message: "You have successfully created an account",
+      record,
+    });
   } catch (error) {
     res.status(500);
     console.log(error);
@@ -72,19 +72,17 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
     } 
 
     if (validUser) {
-      res
-        .status(200)
-        .cookie("token", token, {
+      res.cookie("token", token, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        sameSite: "strict",
+        httpOnly: true,
+      });
+        res.cookie("id",id, {
           maxAge: 1000 * 60 * 60 * 24 * 7,
           sameSite: "strict",
           httpOnly: true,
         })
-        .cookie("user", User.id, {
-          maxAge: 1000 * 60 * 60 * 24 * 7,
-          sameSite: "strict",
-          httpOnly: true,
-        })
-        res.redirect("/dashboard")
+         res.redirect("/dashboard")
       //   .json({
       //   message: "Login Successful",
       //   token,
@@ -100,6 +98,24 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
   } catch (error) {
     res.status(500);
     console.log(error);
+  }
+}
+
+// function to log user to dashboard
+export async function RenderLoggedUserDashboard(req: Request, res: Response, next: NextFunction) {
+  let id = req.cookies.id;
+  try {
+    const record = await UserInstance.findOne({ where: {id},
+      include: [{
+        model: ProductInstance,
+        as: 'products'
+      }]
+    });
+   res.render('dashboard', {record})
+  } catch (error) {
+    res.status(500).json({
+      message: "error, something went wrong"
+    })
   }
 }
 
@@ -119,16 +135,16 @@ export async function GetUsers(
         as: 'products'
       }]
   });
-    res.status(200).render('index', {record: record.rows})
-    // res.status(200).json({
-    //   message: "You have successfully retrieved all users",
-    //   count: record.count,
-    //   record: record.rows
-    // });
+    // res.status(200).render('index', {record: record.rows})
+    res.status(200).json({
+      message: "You have successfully retrieved all users",
+      count: record.count,
+      record: record.rows
+    });
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
-      route: "/read",
+      route: "/api/users",
     });
   }
 }
