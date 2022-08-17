@@ -5,15 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_errors_1 = __importDefault(require("http-errors"));
 const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const db_config_1 = __importDefault(require("./config/db.config"));
 const cors_1 = __importDefault(require("cors"));
-const index_1 = __importDefault(require("./routes/index"));
 const products_1 = __importDefault(require("./routes/products"));
 const users_1 = __importDefault(require("./routes/users"));
-// import staticRouter from './routes/static';
 db_config_1.default.sync().then(() => {
     console.log('Database connected');
 }).catch(err => {
@@ -26,8 +23,6 @@ app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.static(path_1.default.join('public')));
-app.use('/', index_1.default);
 app.use('/', users_1.default);
 app.use('/', products_1.default);
 // catch 404 and forward to error handler

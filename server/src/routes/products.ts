@@ -9,20 +9,17 @@ import {
     GetProducts,
     GetProduct,
     GetUserProducts,
-    updateProduct,
-    deleteProduct
+    UpdateProduct,
+    DeleteProduct
 } from '../controller/productsController';
 // import { staticAddProduct } from '../controller/usersController';
 
 // static routes
 router.get('./addproduct', auth, staticAddProduct)
 
-/* POST products listing. */
-/* ACCESS: PRIVATE only registered users*/
+
 router.post('/api/products', auth, AddProduct);
 
-/* GET get all products listing. */
-/* ACCESS: PUBLIC only registered users*/
 router.get('/api/products', async  (req, res, next) => {
     let record = await GetProducts(req, res, next)
     res.status(200).json({
@@ -31,21 +28,13 @@ router.get('/api/products', async  (req, res, next) => {
     })
 });
 
-/* GET get all products listing by user */
-/* ACCESS: PRIVATE only registered users*/
 router.get('/api/products/user', auth, GetUserProducts);
 
-/* GET products by id listing. */
-/* ACCESS: PUBLIC */
 router.get('/api/products/:id', GetProduct);
 
-/* PUT edit products listing. */
-/* ACCESS: PRIVATE only registered user*/
-router.put('/api/products/put/:id', auth, updateProduct);
+router.put('/api/products/:id', auth, UpdateProduct);
 
-/* DESC; DELETE delete products listing. O*/
-/* ACCESS: PRIVATE only registered users*/
-router.delete('/api/products/delete/:id', auth, deleteProduct);
+router.delete('/api/products/:id', auth, DeleteProduct);
 
 export default router
 

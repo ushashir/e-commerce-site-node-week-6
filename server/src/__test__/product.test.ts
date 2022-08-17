@@ -4,8 +4,8 @@ import {
   GetProducts,
   GetProduct,
   GetUserProducts,
-  updateProduct,
-  deleteProduct,
+  UpdateProduct,
+  DeleteProduct,
 } from "../controller/productsController";
 
 

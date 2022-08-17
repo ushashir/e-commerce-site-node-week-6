@@ -48,12 +48,10 @@ export async function GetProducts(
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
     const record = await ProductInstance.findAll({ where: {}, limit, offset });
-    // res.render("index", { record: record.rows })
-    return record;
-    // json({
-    //   message: "You have successfully retrieved all products",
-    //   record,
-    // })
+    res.status(200).json({
+      message: "You have successfully retrieved all products",
+      record,
+    })
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
@@ -76,6 +74,9 @@ export async function GetProduct(
       message: `You have successfully retrieved a product with the id of ${id}`,
       record,
     });
+    console.log(record);
+    
+
   } catch (error) {
     res.status(500).json({
       message: "failed to get product"
@@ -107,12 +108,12 @@ export async function GetUserProducts(
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
-      route: "/api/products/user",
+      route: "/api/products",
     });
   }
 }
 
-export async function updateProduct(
+export async function UpdateProduct(
   req: Request,
   res: Response,
   next: NextFunction
@@ -166,7 +167,7 @@ export async function updateProduct(
 }
 
 
-export async function deleteProduct(
+export async function DeleteProduct(
   req: Request,
   res: Response,
   next: NextFunction

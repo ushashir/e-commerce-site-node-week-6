@@ -5,12 +5,12 @@ var router = express.Router();
 
 import {
     SignUpUser,
-    loginUser,
+    LoginUser,
     GetUsers,
     GetUser,
-    updateUser,
-    deleteUser,
-    logout
+    UpdateUser,
+    DeleteUser,
+    Logout
 } from '../controller/usersController';
 
 describe("Register user", () => {

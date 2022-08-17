@@ -2,11 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { UserInstance } from "../model/users";
 import { signUpUserSchema, options, loginUserSchema } from "../utils/utils";
-
 import { generateToken } from '../utils/utils' 
-
 import bcrypt from 'bcrypt';
 import { ProductInstance } from "../model/products";
+
   
 export async function SignUpUser(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
@@ -18,7 +17,6 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       });
     }
     const pwHash = await bcrypt.hash(req.body.password,8)
-
     const duplicateEmail =  await UserInstance.findOne({where: {email: req.body.email}})
         if(duplicateEmail){
             res.status(409).json({
@@ -34,7 +32,6 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       address: req.body.address,
       password: pwHash,
     });
-    
     res.status(201);
     // res.redirect('/api/products')
     res.json({
@@ -47,7 +44,7 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
   }
 }
 
-export async function loginUser(req: Request, res: Response, next: NextFunction) {
+export async function LoginUser(req: Request, res: Response, next: NextFunction) {
   const id = uuidv4();
   try {
     const validationResult = loginUserSchema.validate(req.body, options);
@@ -70,31 +67,32 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
         User
       })
     } 
-
     if (validUser) {
-      res.cookie("token", token, {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        sameSite: "strict",
-        httpOnly: true,
-      });
-        res.cookie("id",id, {
-          maxAge: 1000 * 60 * 60 * 24 * 7,
-          sameSite: "strict",
-          httpOnly: true,
-        })
+      // res.cookie("token", token, {
+      //   maxAge: 1000 * 60 * 60 * 24 * 7,
+      //   sameSite: "strict",
+      //   httpOnly: true,
+      // });
+      //   res.cookie("id",id, {
+      //     maxAge: 1000 * 60 * 60 * 24 * 7,
+      //     sameSite: "strict",
+      //     httpOnly: true,
+      //   })
         //  res.redirect("/dashboard")
-        .json({
+        res.status(201).json({
         message: "Login Successful",
         token,
         User
-      })
+        })
     } 
-
-    res.status(201);
-    res.json({
-      message: "You have successfully created an account",
-      record: ""
-    });
+    console.log(token)
+     console.log(User)
+    // res.status(201);
+    // res.json({
+    //   message: "You have successfully created an account",
+    //   record: record
+    // });
+    // console.log(record)
   } catch (error) {
     res.status(500);
     console.log(error);
@@ -105,20 +103,20 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
 export async function RenderLoggedUserDashboard(req: Request, res: Response, next: NextFunction) {
   let id = req.cookies.id;
   try {
-    const record = await UserInstance.findOne({ where: {id},
+    const record = await UserInstance.findOne({
+      where: { id },
       include: [{
         model: ProductInstance,
         as: 'products'
       }]
     });
-   res.render('dashboard', {record})
+    res.render('dashboard', { record })
   } catch (error) {
     res.status(500).json({
       message: "error, something went wrong"
     })
   }
 }
-
 // Get all users
 export async function GetUsers(
   req: Request,
@@ -174,7 +172,7 @@ export async function GetUser(
   }
 }
 
-export async function updateUser(
+export async function UpdateUser(
   req: Request,
   res: Response,
   next: NextFunction
@@ -210,7 +208,7 @@ export async function updateUser(
 }
 
 
-export async function deleteUser(
+export async function DeleteUser(
   req: Request,
   res: Response,
   next: NextFunction
@@ -236,7 +234,7 @@ export async function deleteUser(
   }
 }
 
-export async function logout(req: Request, res: Response) {
+export async function Logout(req: Request, res: Response) {
   res.clearCookie("token");
   // res.status(200).json({
   //   message: "You have successfully loggedout"

@@ -5,36 +5,31 @@ import { auth } from '../middleware/auth';
 
 import {
     SignUpUser,
-    loginUser,
+    LoginUser,
     GetUsers,
     GetUser,
-    updateUser,
-    deleteUser,
-    logout
+    UpdateUser,
+    DeleteUser,
+    Logout
 } from '../controller/usersController';
 
-
-
-/* POST sign up user */
 router.post('/api/users', SignUpUser);
 
-/* POST login user */
-router.post('/api/login', loginUser);
+router.post('/api/login', LoginUser);
 
-/* GET get all users listing. */
 router.get('/api/users', GetUsers);
 
 /* GET get a single user */
 router.get('/api/user/:id/', GetUser);
 
 /* PUT update user. */
-router.put('/api/users/:id', auth, updateUser);
+router.put('/api/users/:id', auth, UpdateUser);
 
 /* DELETE delete user */
-router.delete('/api/users/:id', auth, deleteUser);
+router.delete('/api/users/:id', auth, DeleteUser);
 
 /* logout*/
-router.delete('/api/logout', logout);
+router.delete('/api/logout', Logout);
 
 export default router
 
