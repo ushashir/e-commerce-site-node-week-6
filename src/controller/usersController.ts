@@ -83,21 +83,12 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
           httpOnly: true,
         })
          res.redirect("/dashboard")
-      //   .json({
-      //   message: "Login Successful",
-      //   token,
-      //   User
-      // })
     } 
-
-    res.status(201);
-    res.json({
-      message: "You have successfully created an account",
-      record: ""
-    });
+  
   } catch (error) {
+      console.log(error);
     res.status(500);
-    console.log(error);
+  
   }
 }
 
@@ -111,8 +102,10 @@ export async function RenderLoggedUserDashboard(req: Request, res: Response, nex
         as: 'products'
       }]
     });
+    console.log(record)
    res.render('dashboard', {record})
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "error, something went wrong"
     })

@@ -15,19 +15,17 @@ router.get('/', async (req, res, next) => {
         record
     });
 });
-/* GET / POST signup page. */
 router.get('/signup', function (req, res, next) {
     res.render('signup', { title: 'sign up page' });
 });
 router.post('/signup', usersController_1.SignUpUser);
-/* GET POST login page. */
 router.get('/login', function (req, res, next) {
     res.render('login', { title: 'login page' });
 });
-router.post('/login', usersController_1.RenderLoggedUserDashboard);
-/* GET POST products */
+router.post('/login', usersController_1.loginUser);
 router.get('/add/products', async (req, res, next) => {
     res.render("addProduct", { title: "add products" });
 });
 router.post('/add/products', productsController_1.AddProduct);
+router.get('/dashboard', usersController_1.RenderLoggedUserDashboard);
 exports.default = router;

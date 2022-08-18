@@ -11,6 +11,7 @@ const usersController_1 = require("../controller/usersController");
 router.post('/api/users', usersController_1.SignUpUser);
 /* POST login user */
 router.post('/api/login', usersController_1.loginUser);
+// router.post('/api/login', RenderLoggedUserDashboard);
 /* GET get all users listing. */
 router.get('/api/users', usersController_1.GetUsers);
 /* GET get a single user */

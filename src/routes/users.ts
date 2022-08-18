@@ -10,7 +10,8 @@ import {
     GetUser,
     updateUser,
     deleteUser,
-    logout
+    logout,
+    RenderLoggedUserDashboard
 } from '../controller/usersController';
 
 
@@ -20,6 +21,7 @@ router.post('/api/users', SignUpUser);
 
 /* POST login user */
 router.post('/api/login', loginUser);
+// router.post('/api/login', RenderLoggedUserDashboard);
 
 /* GET get all users listing. */
 router.get('/api/users', GetUsers);
