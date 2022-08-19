@@ -18,7 +18,6 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       });
     }
     const pwHash = await bcrypt.hash(req.body.password,8)
-
     const duplicateEmail =  await UserInstance.findOne({where: {email: req.body.email}})
         if(duplicateEmail){
             res.status(409).json({
@@ -35,15 +34,16 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       password: pwHash,
     });
     
-    res.status(201);
-    // res.redirect('/api/products')
-    res.json({
-      message: "You have successfully created an account",
-      record,
-    });
+    res.redirect('/regpass')
+      // res.status(201);
+    // res.json({
+    //   message: "You have successfully created an account",
+    //   record,
+    // });
   } catch (error) {
+     console.log(error);
     res.status(500);
-    console.log(error);
+   
   }
 }
 
@@ -62,7 +62,6 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
     const token = generateToken({ id })
     // console.log(token)
     const validUser = await bcrypt.compare(req.body.password, User.password)
-
      if (!validUser) {
       res.status(401).json({
         message: "Incorrect Password",
@@ -102,14 +101,30 @@ export async function RenderLoggedUserDashboard(req: Request, res: Response, nex
         as: 'products'
       }]
     });
-    console.log(record)
    res.render('dashboard', {record})
   } catch (error) {
     console.log(error)
-    res.status(500).json({
-      message: "error, something went wrong"
-    })
+    res.redirect('/login')
+    
+    // res.status(500).json({
+    //   message: "error, something went wrong"
+    // })
   }
+}
+
+export async function Logout(req: Request, res: Response, next: NextFunction) {
+    res.cookie("token", '', {
+        maxAge: 0,
+        sameSite: "strict",
+        httpOnly: true,
+      });
+        res.cookie("id",'', {
+          maxAge: 0,
+          sameSite: "strict",
+          httpOnly: true,
+        })
+    res.redirect('/');
+  
 }
 
 // Get all users

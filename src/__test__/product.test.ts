@@ -1,10 +1,9 @@
 import {
-  staticAddProduct,
   AddProduct,
   GetProducts,
   GetProduct,
   GetUserProducts,
-  updateProduct,
+  UpdateProduct,
   deleteProduct,
 } from "../controller/productsController";
 

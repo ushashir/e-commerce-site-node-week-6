@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Nawill Stores | <%= title %>
+    </title>
+    <link rel="stylesheet" href="/src/style.css">
+    <!-- Fontawesome CDN Link -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Welcome to Nawill Online store">
+    <meta content="Eccomerce, Online Store, Shopping" name="keywords">
+
+</head>
+
+<body>
+    <!-- Move to up button -->
+    <div class="scroll-button">
+        <a href="/"><i class="fas fa-arrow-up"></i></a>
+    </div>
+    <!-- navgaition menu -->
+    <nav>
+        <div class="navbar">
+            <div class="logo"><a href="/">Nawill Stores</a></div>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <div class="cancel-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+            </ul>
+        </div>
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+<% for(let product of updateProduct){%>
+<p><%=product.fullName%></p>
+  %}%
+    <section class="services" id="services">
+        <div class="content">
+            <div class="title"><span>Update Product Here</span></div>
+
+            <section class="vh-100" style="background-color: #eee;">
+                <div class="container">
+
+                    <h1>Update Product</h1>
+                    <p>Edit Product details below to add new product</p>
+                    <hr>
+
+                    <form class="mx-1 mx-md-4" method="put" action="/api/products/">
+            
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="productName">Product Name</label>
+                                <input type="text" id="productName" placeholder="Enter Product Name"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <!-- Product image -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label>Select Image File:</label>
+                                <input type="file" name="image">
+                                <input type="submit" name="submit" value="Upload">
+                            </div>
+                        </div>
+                        <!-- brand -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="brand">Brand</label>
+                                <input type="text" id="brand" placeholder="Brand" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- Category -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="category">Category</label>
+                                <input type="text" id="category" placeholder="Category" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- description -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="Description">Description</label>
+                                <input type="text" id="description" placeholder="Descripe Product"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <!-- price -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="price">Price</label>
+                                <input type="number" id="price" placeholder="Price" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- countInStock -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="countInStock">Count In Stock</label>
+                                <input type="number" id="countInStock" placeholder="Count In Stock"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <!-- rating -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="rating">Rating</label>
+                                <input type="number" id="rating" placeholder="Rating" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- numReviews -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="numReviews">Reviews</label>
+                                <input type="number" id="numReviews" placeholder="Rating" class="form-control" />
+                            </div>
+                        </div>
+                        <button type="submit">Submit</button>
+                </div>
+            </section>
+
+        </div>
+        </div>
+    </section>
+
+    
+    <!-- Footer Section Start -->
+
+    <footer>
+        <div class="text">
+            <span>Nawill Stores| &#169; 2022 All Rights Reserved</span>
+        </div>
+    </footer>
+
+    <script src="/src/script.js"></script>
+</body>
+
+</html>

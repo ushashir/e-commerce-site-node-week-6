@@ -4,9 +4,6 @@ import { ProductInstance } from "../model/products";
 
 import { createProductSchema, options} from "../utils/utils";
 
-export function staticAddProduct(req: Request, res: Response, next: NextFunction) {
-  res.render('addProduct')
-}
 
 export async function AddProduct(req: Request | any, res: Response, next: NextFunction) {
   let id = uuidv4();
@@ -23,7 +20,6 @@ export async function AddProduct(req: Request | any, res: Response, next: NextFu
       ...req.body,
       userId: verified.id
     });
-
     res.status(201);
     res.json({
       message: "You have successfully added a new product",
@@ -48,12 +44,8 @@ export async function GetProducts(
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
     const record = await ProductInstance.findAll({ where: {}, limit, offset });
-    // res.render("index", { record: record.rows })
     return record;
-    // json({
-    //   message: "You have successfully retrieved all products",
-    //   record,
-    // })
+ 
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
@@ -99,11 +91,11 @@ export async function GetUserProducts(
       }]
     
     });
-    res.render("index",{record})
-    res.status(200).json({
-      message: "You have successfully retrieved all products",
-      record,
-    });
+    return res.render("index",{record})
+    // res.status(200).json({
+    //   message: "You have successfully retrieved all products",
+    //   record,
+    // });
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
@@ -112,11 +104,7 @@ export async function GetUserProducts(
   }
 }
 
-export async function updateProduct(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function UpdateProduct( req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const {
@@ -132,10 +120,7 @@ export async function updateProduct(
       } = req.body;
     const validationResult = createProductSchema.validate(req.body, options);
     const record = await ProductInstance.findOne({
-      where: {
-        id,
-      },
-    });
+      where: { id },});
     if (!record) {
       return res.status(404).json({
         error: "Cannot find product",
@@ -152,12 +137,11 @@ export async function updateProduct(
             rating,
             numReviews
     });
-
-    res.status(202).json({
-      message: `You have successfully updated a product with the id of ${id}`,
-      updateRecord,
-    });
+    console.log(updateRecord)
+    return updateRecord
+    
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "failed to update product",
       route: "/update/:id",

@@ -1,13 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.GetUserProducts = exports.GetProduct = exports.GetProducts = exports.AddProduct = exports.staticAddProduct = void 0;
+exports.deleteProduct = exports.UpdateProduct = exports.GetUserProducts = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
 const uuid_1 = require("uuid");
 const products_1 = require("../model/products");
 const utils_1 = require("../utils/utils");
-function staticAddProduct(req, res, next) {
-    res.render('addProduct');
-}
-exports.staticAddProduct = staticAddProduct;
 async function AddProduct(req, res, next) {
     let id = (0, uuid_1.v4)();
     try {
@@ -44,12 +40,7 @@ async function GetProducts(req, res, next) {
         const limit = req.query.limit;
         const offset = req.query.offset;
         const record = await products_1.ProductInstance.findAll({ where: {}, limit, offset });
-        // res.render("index", { record: record.rows })
         return record;
-        // json({
-        //   message: "You have successfully retrieved all products",
-        //   record,
-        // })
     }
     catch (error) {
         res.status(500).json({
@@ -88,11 +79,11 @@ async function GetUserProducts(req, res, next) {
                     as: 'products'
                 }]
         });
-        res.render("index", { record });
-        res.status(200).json({
-            message: "You have successfully retrieved all products",
-            record,
-        });
+        return res.render("index", { record });
+        // res.status(200).json({
+        //   message: "You have successfully retrieved all products",
+        //   record,
+        // });
     }
     catch (error) {
         res.status(500).json({
@@ -102,15 +93,13 @@ async function GetUserProducts(req, res, next) {
     }
 }
 exports.GetUserProducts = GetUserProducts;
-async function updateProduct(req, res, next) {
+async function UpdateProduct(req, res, next) {
     try {
         const { id } = req.params;
         const { productName, image, brand, category, description, price, countInStock, rating, numReviews } = req.body;
         const validationResult = utils_1.createProductSchema.validate(req.body, utils_1.options);
         const record = await products_1.ProductInstance.findOne({
-            where: {
-                id,
-            },
+            where: { id },
         });
         if (!record) {
             return res.status(404).json({
@@ -128,19 +117,18 @@ async function updateProduct(req, res, next) {
             rating,
             numReviews
         });
-        res.status(202).json({
-            message: `You have successfully updated a product with the id of ${id}`,
-            updateRecord,
-        });
+        console.log(updateRecord);
+        return updateRecord;
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({
             message: "failed to update product",
             route: "/update/:id",
         });
     }
 }
-exports.updateProduct = updateProduct;
+exports.UpdateProduct = UpdateProduct;
 async function deleteProduct(req, res, next) {
     try {
         const { id } = req.params;

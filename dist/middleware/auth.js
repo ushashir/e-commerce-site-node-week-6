@@ -11,12 +11,13 @@ const secret = process.env.JWT_SECRET;
 async function auth(req, res, next) {
     try {
         const authorization = req.headers.authorization;
-        if (!authorization) {
-            res.status(401).json({
+        const cookie = req.cookies.token;
+        if (!authorization && !cookie) {
+            return res.status(401).json({
                 Error: "Kindly Sign in as a user"
             });
         }
-        const token = authorization?.slice(7, authorization.length);
+        const token = authorization?.slice(7, authorization.length) || cookie;
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
             return res.status(401).json({

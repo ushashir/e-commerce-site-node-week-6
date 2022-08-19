@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.RenderLoggedUserDashboard = exports.loginUser = exports.SignUpUser = void 0;
+exports.logout = exports.deleteUser = exports.updateUser = exports.GetUser = exports.GetUsers = exports.Logout = exports.RenderLoggedUserDashboard = exports.loginUser = exports.SignUpUser = void 0;
 const uuid_1 = require("uuid");
 const users_1 = require("../model/users");
 const utils_1 = require("../utils/utils");
@@ -35,16 +35,16 @@ async function SignUpUser(req, res, next) {
             address: req.body.address,
             password: pwHash,
         });
-        res.status(201);
-        // res.redirect('/api/products')
-        res.json({
-            message: "You have successfully created an account",
-            record,
-        });
+        res.redirect('/regpass');
+        // res.status(201);
+        // res.json({
+        //   message: "You have successfully created an account",
+        //   record,
+        // });
     }
     catch (error) {
-        res.status(500);
         console.log(error);
+        res.status(500);
     }
 }
 exports.SignUpUser = SignUpUser;
@@ -100,17 +100,31 @@ async function RenderLoggedUserDashboard(req, res, next) {
                     as: 'products'
                 }]
         });
-        console.log(record);
         res.render('dashboard', { record });
     }
     catch (error) {
         console.log(error);
-        res.status(500).json({
-            message: "error, something went wrong"
-        });
+        res.redirect('/login');
+        // res.status(500).json({
+        //   message: "error, something went wrong"
+        // })
     }
 }
 exports.RenderLoggedUserDashboard = RenderLoggedUserDashboard;
+async function Logout(req, res, next) {
+    res.cookie("token", '', {
+        maxAge: 0,
+        sameSite: "strict",
+        httpOnly: true,
+    });
+    res.cookie("id", '', {
+        maxAge: 0,
+        sameSite: "strict",
+        httpOnly: true,
+    });
+    res.redirect('/');
+}
+exports.Logout = Logout;
 // Get all users
 async function GetUsers(req, res, next) {
     try {

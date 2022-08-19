@@ -4,25 +4,23 @@ var router = express.Router();
 import { auth } from '../middleware/auth'
 
 import {
-    staticAddProduct,
      AddProduct,
     GetProducts,
     GetProduct,
     GetUserProducts,
-    updateProduct,
+    UpdateProduct,
     deleteProduct
-} from '../controller/productsController';
-// import { staticAddProduct } from '../controller/usersController';
+} from '../controller/productsController'; 
 
-// static routes
-router.get('./addproduct', auth, staticAddProduct)
-
-/* POST products listing. */
-/* ACCESS: PRIVATE only registered users*/
-router.post('/api/products', auth, AddProduct);
-
-/* GET get all products listing. */
-/* ACCESS: PUBLIC only registered users*/
+// get products render homepage - public route
+router.get('/', async (req, res, next) => {
+    let record = await GetProducts(req, res, next)
+    res.render("index", {
+    title: "home page",
+    record
+  })
+});
+// Get products render api - public route
 router.get('/api/products', async  (req, res, next) => {
     let record = await GetProducts(req, res, next)
     res.status(200).json({
@@ -31,21 +29,39 @@ router.get('/api/products', async  (req, res, next) => {
     })
 });
 
-/* GET get all products listing by user */
-/* ACCESS: PRIVATE only registered users*/
+// get products render homepage - public route
+router.get('/test', async (req, res, next) => {
+    // let record = await UpdateProduct(req, res, next)
+    res.render("updateProduct")
+});
+// get products render homepage - public route
+router.get('/api/products/:id', async (req, res, next) => {
+    let record = await UpdateProduct(req, res, next)
+    res.render('updateProduct', {record})
+    res.status(200).json({
+        message: "you have succesfully updated user",
+        record
+    })
+});
+
+router.get('/api/products/:id', GetProduct); // get single product public
+
+router.get('/add/products', async (req, res, next) => {
+    res.render("addProduct",{title: "add products"})
+}); // renders add product form on UI
+router.post('/add/products', auth, AddProduct); // UI add product endpoint
+// router.post('/api/products', AddProduct); // api addproduct endpoint
+
 router.get('/api/products/user', auth, GetUserProducts);
 
-/* GET products by id listing. */
-/* ACCESS: PUBLIC */
-router.get('/api/products/:id', GetProduct);
-
-/* PUT edit products listing. */
-/* ACCESS: PRIVATE only registered user*/
-router.put('/api/products/put/:id', auth, updateProduct);
-
-/* DESC; DELETE delete products listing. O*/
-/* ACCESS: PRIVATE only registered users*/
+router.get('/update/products', async (req, res, next) => {
+    res.render("UpdateProduct",{title: "update products"})
+});
+router.put('/api/products/:id', auth, UpdateProduct);
 router.delete('/api/products/delete/:id', auth, deleteProduct);
+
+
+router.put('/add/products', UpdateProduct);
 
 export default router
 

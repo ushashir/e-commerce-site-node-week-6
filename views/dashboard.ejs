@@ -21,21 +21,20 @@
 <body>
     <!-- Move to up button -->
     <div class="scroll-button">
-        <a href="#home"><i class="fas fa-arrow-up"></i></a>
+        <a href="/"><i class="fas fa-arrow-up"></i></a>
     </div>
     <!-- navgaition menu -->
     <nav>
         <div class="navbar">
-            <div class="logo"><a href="index.html">Nawill Stores</a></div>
+            <div class="logo"><a href="/">Nawill Stores</a></div>
             <ul class="menu">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/add-new-product"> <button>Add New product</button> </a></li>
-                <li><a href="#skills">Log Out</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/add/products">AddProduct</a></li>
+                <li><a href="/logout">Log Out</a></li>
                 <div class="cancel-btn">
                     <i class="fas fa-times"></i>
                 </div>
             </ul>
-          
         </div>
         <div class="menu-btn">
             <i class="fas fa-bars"></i>
@@ -45,14 +44,15 @@
     <!-- Shops Section Start -->
     <section class="services" id="services">
         <div class="content">
-            <div class="title"><span>Our Store</span></div>
+            <div class="title"><span>Admin Dashboard</span></div>
+        <a href="/add/products" ><button class="btn btn-secondary"> Add New Product </button></a>
 
             <h2>Products</h2>
-            
             <table>
             
                 <tr>
                     <th>Product Name</th>
+                    <th>Image</th>
                     <th>Brand</th>
                     <th>Category</th>
                     <th>Description</th>
@@ -70,6 +70,10 @@
                     <tr>
                         <td>
                             <%=product.productName%>
+                        </td>
+                        <td>
+                            <img src="<%=product.image%>" alt="" height="25px" width="25px" >
+                            
                         </td>
                         <td>
                             <%=product.brand%>
@@ -99,10 +103,10 @@
                             <%=product.updatedAt.toDateString() + " " + new Date().toLocaleTimeString()%>
                         </td>
                         <td>
-                            <button><a href="/add-new-product/" class="btn btn-sm btn-primary">Edit</a></button>
+                            <button><a href="api/products/put/<%=product.id%>" class="btn btn-sm btn-primary">Edit</a></button>
                         </td>
                         <td>
-                            <button><a href="api/products/<%= product.id %>" class="btn btn-sm btn-danger">Delete</a></button>
+                            <button><a href="api/products/" class="btn btn-sm btn-danger">Delete</a></button>
                         </td>
             
                     </tr>
@@ -136,24 +140,9 @@
             }
         </style>
 
-    <!-- Contact Me section Start -->
-    <!-- Contact Me section Start -->
-    <section class="contact" id="contact">
-        <div class="content">
-            <div class="title"><span>Contact Us</span></div>
-            <div class="text">
-                <div class="button">
-                    <button> <a href="tel:+2349018515257">Call</a> </button>
-                </div>
-                or
-                <div class="button">
-                    <button> <a href="mailto:ushahembashir@gmail.com">Send me a Message</a> </button>
-                </div>
-            </div>
-        </div>
-    </section>
+  
     <!-- Footer Section Start -->
-
+        <br>
     <footer>
         <div class="text">
             <span>Nawill Stores| &#169; 2022 All Rights Reserved</span>
