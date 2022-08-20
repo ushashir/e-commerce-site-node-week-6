@@ -11,7 +11,7 @@ router.post('/api/users', usersController_1.SignUpUser);
 router.post('/api/login', usersController_1.LoginUser);
 router.get('/api/users', usersController_1.GetUsers);
 /* GET get a single user */
-router.get('/api/user/:id/', usersController_1.GetUser);
+router.get('/api/user/:id', usersController_1.GetUser);
 /* PUT update user. */
 router.put('/api/users/:id', auth_1.auth, usersController_1.UpdateUser);
 /* DELETE delete user */

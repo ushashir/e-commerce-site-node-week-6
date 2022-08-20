@@ -20,7 +20,7 @@ router.post('/api/login', LoginUser);
 router.get('/api/users', GetUsers);
 
 /* GET get a single user */
-router.get('/api/user/:id/', GetUser);
+router.get('/api/user/:id', GetUser);
 
 /* PUT update user. */
 router.put('/api/users/:id', auth, UpdateUser);
