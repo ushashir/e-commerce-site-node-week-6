@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title> Nawill Stores | Homepage </title>
+    <title> Nawill Stores | Admin Dashbaord </title>
     <link rel="stylesheet" href="/src/style.css">
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -67,6 +67,7 @@
             
                 </tr>
                 <%for(let product of record.products){ %>
+                    <% id = product.id %>
                     <tr>
                         <td>
                             <%=product.productName%>
@@ -103,17 +104,41 @@
                             <%=product.updatedAt.toDateString() + " " + new Date().toLocaleTimeString()%>
                         </td>
                         <td>
-                            <button><a href="api/products/put/<%=product.id%>" class="btn btn-sm btn-primary">Edit</a></button>
+                            <button ><a href="update/product/<%=product.id%>" class="btn btn-sm btn-primary">Edit</a></button>
                         </td>
                         <td>
-                            <button><a href="api/products/" class="btn btn-sm btn-danger">Delete</a></button>
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
                         </td>
-            
+                     
+                  <%}%>
                     </tr>
-                    <%}%>
+               
             </table>
-
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete Product?
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/api/products/delete/<%= id %>" method="post">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
+                            <button type="submit" class="btn btn-danger"> YES</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
     </section>
 
         <div class="content">

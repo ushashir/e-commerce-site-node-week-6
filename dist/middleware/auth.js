@@ -13,23 +13,29 @@ async function auth(req, res, next) {
         const authorization = req.headers.authorization;
         const cookie = req.cookies.token;
         if (!authorization && !cookie) {
-            return res.status(401).json({
-                Error: "Kindly Sign in as a user"
-            });
+            res.redirect('/login');
+            return;
+            // return res.status(401).json({
+            //     Error: "Kindly Sign in as a user"
+            // })
         }
         const token = authorization?.slice(7, authorization.length) || cookie;
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
-            return res.status(401).json({
-                Error: 'User not verified, cannot access this route'
-            });
+            res.redirect('/login');
+            return;
+            // return res.status(401).json({
+            //     Error:'User not verified, cannot access this route'
+            // })
         }
         const { id } = verified;
         const user = await users_1.UserInstance.findOne({ where: { id } });
         if (!user) {
-            return res.status(404).json({
-                Error: "User not Verified"
-            });
+            res.redirect('/login');
+            return;
+            // return res.status(404).json({
+            //     Error: "User not Verified"
+            // })
         }
         req.user = verified;
         next();

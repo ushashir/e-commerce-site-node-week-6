@@ -10,14 +10,13 @@ const auth_1 = require("../middleware/auth");
 router.get('/signup', function (req, res, next) {
     res.render('signup', { title: 'sign up page' });
 });
-router.post('/signup', usersController_1.SignUpUser);
-router.get('/regpass', function (req, res, next) {
-    res.render('regPass');
-}); // registration success pop up
 router.get('/login', function (req, res, next) {
     res.render('login', { title: 'login page' });
 });
-router.post('/login', usersController_1.loginUser);
 router.get('/dashboard', auth_1.auth, usersController_1.RenderLoggedUserDashboard);
-// pops up
+router.get('/regpass', function (req, res, next) {
+    res.render('regPass');
+});
+router.post('/signup', usersController_1.SignUpUser);
+router.post('/login', usersController_1.loginUser);
 exports.default = router;

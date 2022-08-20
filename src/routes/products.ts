@@ -7,6 +7,8 @@ import {
      AddProduct,
     GetProducts,
     GetProduct,
+    RenderUpdate,
+    RenderDelete,
     GetUserProducts,
     UpdateProduct,
     deleteProduct
@@ -29,39 +31,21 @@ router.get('/api/products', async  (req, res, next) => {
     })
 });
 
-// get products render homepage - public route
-router.get('/test', async (req, res, next) => {
-    // let record = await UpdateProduct(req, res, next)
-    res.render("updateProduct")
-});
-// get products render homepage - public route
-router.get('/api/products/:id', async (req, res, next) => {
-    let record = await UpdateProduct(req, res, next)
-    res.render('updateProduct', {record})
-    res.status(200).json({
-        message: "you have succesfully updated user",
-        record
-    })
-});
-
-router.get('/api/products/:id', GetProduct); // get single product public
+router.get('/api/products/:id', GetProduct)
+router.get('/update/product/:id', RenderUpdate)
+// router.get('/delete/product/:id', RenderDelete)
 
 router.get('/add/products', async (req, res, next) => {
     res.render("addProduct",{title: "add products"})
-}); // renders add product form on UI
-router.post('/add/products', auth, AddProduct); // UI add product endpoint
-// router.post('/api/products', AddProduct); // api addproduct endpoint
-
+}); 
 router.get('/api/products/user', auth, GetUserProducts);
 
-router.get('/update/products', async (req, res, next) => {
-    res.render("UpdateProduct",{title: "update products"})
-});
+router.post('/add/products', auth, AddProduct); // UI add product endpoint
 router.put('/api/products/:id', auth, UpdateProduct);
+router.post('/api/products/:id', auth, UpdateProduct);
+
 router.delete('/api/products/delete/:id', auth, deleteProduct);
-
-
-router.put('/add/products', UpdateProduct);
+router.post('/api/products/delete/:id', auth, deleteProduct);
 
 export default router
 

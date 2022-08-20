@@ -45,9 +45,27 @@ for (var i = 0; i < navLinks.length; i++) {
 }
 
 // contact js goes here
-document.querySelector('#contact-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  e.target.elements.name.value = '';
-  e.target.elements.email.value = '';
-  e.target.elements.message.value = '';
-});
+// document.querySelector('#contact-form').addEventListener('submit', (e) => {
+//   e.preventDefault();
+//   e.target.elements.name.value = '';
+//   e.target.elements.email.value = '';
+//   e.target.elements.message.value = '';
+// });
+async function deleteProduct(){
+  const response = await fetch(
+    "http://localhost:3000/api/products/",
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: null,
+    }
+  );
+  const data = await response.json();
+  // now do whatever you want with the data
+  console.log(data);
+};
+// deleteData();
+
+// console.log('Hello World')

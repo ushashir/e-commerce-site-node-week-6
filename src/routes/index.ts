@@ -6,20 +6,16 @@ import {auth} from '../middleware/auth'
 router.get('/signup', function(req: Request, res: Response, next: NextFunction) {
   res.render('signup', { title: 'sign up page' });
 });
-router.post('/signup', SignUpUser);
-
-router.get('/regpass', function (req: Request, res: Response, next: NextFunction) {
-  res.render('regPass')
-
-}) // registration success pop up
 router.get('/login', function(req: Request, res: Response, next: NextFunction) {
   res.render('login', { title: 'login page' });
 });
-router.post('/login', loginUser);
 router.get('/dashboard', auth, RenderLoggedUserDashboard);
+router.get('/regpass', function (req: Request, res: Response, next: NextFunction) {
+  res.render('regPass')
+}) 
 
-// pops up
-
+router.post('/signup', SignUpUser);
+router.post('/login', loginUser);
 
 export default router
 

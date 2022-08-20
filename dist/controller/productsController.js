@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.UpdateProduct = exports.GetUserProducts = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
+exports.deleteProduct = exports.UpdateProduct = exports.GetUserProducts = exports.RenderDelete = exports.RenderUpdate = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
 const uuid_1 = require("uuid");
 const products_1 = require("../model/products");
 const utils_1 = require("../utils/utils");
@@ -19,11 +19,12 @@ async function AddProduct(req, res, next) {
             ...req.body,
             userId: verified.id
         });
-        res.status(201);
-        res.json({
-            message: "You have successfully added a new product",
-            record,
-        });
+        res.redirect('/dashboard');
+        // res.status(201);
+        // res.json({
+        //   message: "You have successfully added a new product",
+        //   record,
+        // });
     }
     catch (error) {
         res.status(500).json({
@@ -50,15 +51,24 @@ async function GetProducts(req, res, next) {
     }
 }
 exports.GetProducts = GetProducts;
-// Get single product
+async function getRecord(id) {
+    try {
+        const record = await products_1.ProductInstance.findOne({ where: { id } });
+        return record;
+    }
+    catch (e) {
+        throw e;
+    }
+}
+// Get single product api
 async function GetProduct(req, res, next) {
     try {
         const { id } = req.params;
-        console.log(id);
-        const record = await products_1.ProductInstance.findOne({ where: { id } });
+        const record = await getRecord(id);
+        console.log(record);
         res.status(200).json({
             message: `You have successfully retrieved a product with the id of ${id}`,
-            record,
+            record: record,
         });
     }
     catch (error) {
@@ -68,6 +78,44 @@ async function GetProduct(req, res, next) {
     }
 }
 exports.GetProduct = GetProduct;
+// render product for update
+async function RenderUpdate(req, res, next) {
+    try {
+        const { id } = req.params;
+        const record = await getRecord(id);
+        if (record) {
+            return res.render('updateProduct', { product: record });
+        }
+        else
+            throw "No record";
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "failed to get product"
+        });
+    }
+}
+exports.RenderUpdate = RenderUpdate;
+// render product for delete
+async function RenderDelete(req, res, next) {
+    try {
+        const { id } = req.params;
+        const record = await getRecord(id);
+        if (record) {
+            return res.render('deleteModal', { product: record });
+        }
+        else
+            throw "No record";
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "failed to get product"
+        });
+    }
+}
+exports.RenderDelete = RenderDelete;
 async function GetUserProducts(req, res, next) {
     try {
         const limit = req.query.limit;
@@ -101,6 +149,7 @@ async function UpdateProduct(req, res, next) {
         const record = await products_1.ProductInstance.findOne({
             where: { id },
         });
+        console.log(record);
         if (!record) {
             return res.status(404).json({
                 error: "Cannot find product",
@@ -117,11 +166,13 @@ async function UpdateProduct(req, res, next) {
             rating,
             numReviews
         });
-        console.log(updateRecord);
-        return updateRecord;
+        res.redirect('/dashboard');
+        // return res.status(200).json({
+        //     message: "you have succesfully updated user",
+        //     updateRecord
+        // })
     }
     catch (error) {
-        console.log(error);
         res.status(500).json({
             message: "failed to update product",
             route: "/update/:id",
@@ -139,9 +190,11 @@ async function deleteProduct(req, res, next) {
             });
         }
         const deletedRecord = await record.destroy();
-        return res.status(200).json({
-            msg: "Product Deleted Succesfully", deletedRecord
-        });
+        res.redirect('/dashboard');
+        return;
+        // return res.status(200).json({
+        //   msg: "Product Deleted Succesfully", deletedRecord
+        // })
     }
     catch (error) {
         res.status(500).json({

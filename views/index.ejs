@@ -21,7 +21,7 @@
     <!-- navgaition menu -->
     <nav>
         <div class="navbar">
-            <div class="logo"><a href="index.html">Nawill Stores</a></div>
+            <div class="logo"><a href="/">Nawill Stores</a></div>
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/login">Login</a></li>
@@ -52,15 +52,14 @@
                         <h2>
                             <%=product.productName%>
                         </h2>
-                        <img src="<%=product.image%>" alt="" height="200px" , width="200px">
+                        <img src="<%=product.image%>" alt="" height="180px" , width="180px">
 
                         <h4>N<%=product.price%>
                         </h4>
-                        <p>
-                            <%=product.description%>
-                        </p>
-
                         <div class="project-buttons"> <br>
+                         <button> <a href="#">DETAILS</a> </button> 
+                         <button> <a href="#">BUY NOW</a> </button>
+                            
                         </div>
 
                     </div>
@@ -74,7 +73,7 @@
     <!-- Contact Me section Start -->
     <section class="contact" id="contact">
         <div class="content">
-            <div class="title"><span>Contact Me</span></div>
+            <div class="title"><span>Contact US</span></div>
             <div class="text">
                 <div class="button">
                     <button> <a href="tel:+2349018515257">Call</a> </button>
@@ -90,7 +89,7 @@
 
     <footer>
         <div class="text">
-            <span>Nawill Stores| &#169; 2022 All Rights Reserved</span>
+            <span>Nawill Stores| &#169; 2022 All Rights Reserved</span> <small><a href="http://localhost:3000/api/users">V</a></small>
         </div>
     </footer>
 

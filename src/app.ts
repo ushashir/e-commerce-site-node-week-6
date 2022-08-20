@@ -4,8 +4,6 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import db from './config/db.config';
-
-
 import indexRouter from './routes/index';
 import productsRouter from './routes/products';
 import usersRouter from './routes/users';
@@ -13,17 +11,13 @@ import usersRouter from './routes/users';
 
 db.sync().then(() => {
   console.log('Database connected');
-  
 }).catch(err => {
   console.log(err)
 });
-
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname,"..",'views',));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

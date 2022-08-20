@@ -23,31 +23,16 @@ router.get('/api/products', async (req, res, next) => {
         record,
     });
 });
-// get products render homepage - public route
-router.get('/test', async (req, res, next) => {
-    // let record = await UpdateProduct(req, res, next)
-    res.render("updateProduct");
-});
-// get products render homepage - public route
-router.get('/api/products/:id', async (req, res, next) => {
-    let record = await (0, productsController_1.UpdateProduct)(req, res, next);
-    res.render('updateProduct', { record });
-    res.status(200).json({
-        message: "you have succesfully updated user",
-        record
-    });
-});
-router.get('/api/products/:id', productsController_1.GetProduct); // get single product public
+router.get('/api/products/:id', productsController_1.GetProduct);
+router.get('/update/product/:id', productsController_1.RenderUpdate);
+// router.get('/delete/product/:id', RenderDelete)
 router.get('/add/products', async (req, res, next) => {
     res.render("addProduct", { title: "add products" });
-}); // renders add product form on UI
-router.post('/add/products', auth_1.auth, productsController_1.AddProduct); // UI add product endpoint
-// router.post('/api/products', AddProduct); // api addproduct endpoint
-router.get('/api/products/user', auth_1.auth, productsController_1.GetUserProducts);
-router.get('/update/products', async (req, res, next) => {
-    res.render("UpdateProduct", { title: "update products" });
 });
+router.get('/api/products/user', auth_1.auth, productsController_1.GetUserProducts);
+router.post('/add/products', auth_1.auth, productsController_1.AddProduct); // UI add product endpoint
 router.put('/api/products/:id', auth_1.auth, productsController_1.UpdateProduct);
+router.post('/api/products/:id', auth_1.auth, productsController_1.UpdateProduct);
 router.delete('/api/products/delete/:id', auth_1.auth, productsController_1.deleteProduct);
-router.put('/add/products', productsController_1.UpdateProduct);
+router.post('/api/products/delete/:id', auth_1.auth, productsController_1.deleteProduct);
 exports.default = router;

@@ -137,12 +137,12 @@ async function GetUsers(req, res, next) {
                     as: 'products'
                 }]
         });
-        // res.status(200).render('index', {record: record.rows})
-        res.status(200).json({
-            message: "You have successfully retrieved all users",
-            count: record.count,
-            record: record.rows
-        });
+        res.render('viewUsers', { record: record.rows });
+        // res.status(200).json({
+        //   message: "You have successfully retrieved all users",
+        //   count: record.count,
+        //   record: record.rows
+        // });
     }
     catch (error) {
         res.status(500).json({
