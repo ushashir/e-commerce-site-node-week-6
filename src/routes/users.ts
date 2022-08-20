@@ -14,13 +14,16 @@ import {
 } from '../controller/usersController';
 
 router.get('/logout', Logout);
-router.get('/api/users', GetUsers);
-router.get('/api/user/:id/', GetUser);
 
-router.post('/api/users', SignUpUser);
-router.post('/api/login', loginUser);
-router.put('/api/users/:id', auth, updateUser);
-router.delete('/api/users/:id', auth, deleteUser);
+router.get('/api', GetUsers);
+router.get('/api/:id/', GetUser);
+
+router.post('/api', SignUpUser);
+router.post('/login', loginUser);
+
+router.post('/signup', SignUpUser);
+router.put('/:id', auth, updateUser);
+router.delete('/api/:id', auth, deleteUser);
 
 export default router
 

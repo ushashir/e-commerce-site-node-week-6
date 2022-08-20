@@ -27,7 +27,7 @@
     <!-- navgaition menu -->
     <nav>
         <div class="navbar">
-            <div class="logo"><a href="index.html">Nawill Stores</a></div>
+            <div class="logo"><a href="/">Nawill Stores</a></div>
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/dashboard">Dashbaord</a></li>
@@ -57,8 +57,7 @@
             <p>Please fill the details below to add new product</p>
                 <hr>
 
-    <form class="mx-1 mx-md-4" method="post" action="/add/products">
-        <!-- product name name -->
+    <form class="mx-1 mx-md-4" method="post" action="/products/add">
         <div class="d-flex flex-row align-items-center mb-4">
                 <label class="form-label" for="productName">Product Name</label>
                 <input type="text" name="productName" id="productName" placeholder="Enter Product Name"
@@ -77,7 +76,6 @@
                 <label>Past image URL</label> <br>
                 <input type="text" name="image" placeholder="append image url " class="form-control">
         </div>
-
         <div class="d-flex flex-row align-items-center mb-4">
                 <label class="form-label" for="brand">Brand</label>
                 <input type="text" id="brand" placeholder="Brand" class="form-control" />
@@ -96,7 +94,6 @@
             <label class="form-label" for="price">Price</label>
             <input type="number" name="price" id="price" placeholder="Price" class="form-control" />
         </div>
-        
         <div class="d-flex flex-row align-items-center mb-4">
             <label class="form-label" for="countInStock">Count In Stock</label>
             <input type="number" name="countInStock" id="countInStock" placeholder="Count In Stock"
@@ -112,8 +109,7 @@
             <input type="number" name="numReviews" id="numReviews" placeholder="Rating"
                 class="form-control" />
         </div>   <br>
-        
-        <button type="submit" class="btn btn-success">Add</button>
+        <button type="submit" class="btn btn-success">Add Product</button>
     </div>
     </div>
     </div>

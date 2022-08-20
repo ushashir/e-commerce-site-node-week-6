@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.UpdateProduct = exports.GetUserProducts = exports.RenderDelete = exports.RenderUpdate = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
+exports.deleteProduct = exports.UpdateProduct = exports.RenderUpdate = exports.GetProduct = exports.GetProducts = exports.AddProduct = void 0;
 const uuid_1 = require("uuid");
 const products_1 = require("../model/products");
 const utils_1 = require("../utils/utils");
@@ -20,11 +20,6 @@ async function AddProduct(req, res, next) {
             userId: verified.id
         });
         res.redirect('/dashboard');
-        // res.status(201);
-        // res.json({
-        //   message: "You have successfully added a new product",
-        //   record,
-        // });
     }
     catch (error) {
         res.status(500).json({
@@ -46,7 +41,7 @@ async function GetProducts(req, res, next) {
     catch (error) {
         res.status(500).json({
             message: "failed to get users",
-            route: "/api/products/:id",
+            route: "/products/api/:id",
         });
     }
 }
@@ -97,50 +92,6 @@ async function RenderUpdate(req, res, next) {
     }
 }
 exports.RenderUpdate = RenderUpdate;
-// render product for delete
-async function RenderDelete(req, res, next) {
-    try {
-        const { id } = req.params;
-        const record = await getRecord(id);
-        if (record) {
-            return res.render('deleteModal', { product: record });
-        }
-        else
-            throw "No record";
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "failed to get product"
-        });
-    }
-}
-exports.RenderDelete = RenderDelete;
-async function GetUserProducts(req, res, next) {
-    try {
-        const limit = req.query.limit;
-        const offset = req.query.offset;
-        const record = await products_1.ProductInstance.findAll({
-            where: {}, limit, offset,
-            include: [{
-                    model: products_1.ProductInstance,
-                    as: 'products'
-                }]
-        });
-        return res.render("index", { record });
-        // res.status(200).json({
-        //   message: "You have successfully retrieved all products",
-        //   record,
-        // });
-    }
-    catch (error) {
-        res.status(500).json({
-            message: "failed to get users",
-            route: "/api/products/user",
-        });
-    }
-}
-exports.GetUserProducts = GetUserProducts;
 async function UpdateProduct(req, res, next) {
     try {
         const { id } = req.params;
@@ -149,7 +100,6 @@ async function UpdateProduct(req, res, next) {
         const record = await products_1.ProductInstance.findOne({
             where: { id },
         });
-        console.log(record);
         if (!record) {
             return res.status(404).json({
                 error: "Cannot find product",

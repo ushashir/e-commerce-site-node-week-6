@@ -21,11 +21,6 @@ export async function AddProduct(req: Request | any, res: Response, next: NextFu
       userId: verified.id
     });
     res.redirect('/dashboard')
-    // res.status(201);
-    // res.json({
-    //   message: "You have successfully added a new product",
-    //   record,
-    // });
   } catch (error) {
     res.status(500).json({
       msg: "failed to add product",
@@ -50,7 +45,7 @@ export async function GetProducts(
   } catch (error) {
     res.status(500).json({
       message: "failed to get users",
-      route: "/api/products/:id",
+      route: "/products/api/:id",
     });
   }
 }
@@ -96,48 +91,6 @@ export async function RenderUpdate( req: Request, res: Response, next: NextFunct
   }
 }
 
-// render product for delete
-export async function RenderDelete( req: Request, res: Response, next: NextFunction ) {
-  try {
-    const { id } = req.params;
-    const record = await getRecord(id);
-    if (record) {
-      return res.render('deleteModal', { product: record })
-      
-    } else throw "No record";
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "failed to get product"
-    });
-  }
-}
-
-export async function GetUserProducts(req: Request,res: Response,next: NextFunction) {
-  try {
-    const limit = req.query.limit as number | undefined;
-    const offset = req.query.offset as number | undefined;
-    const record = await ProductInstance.findAll({
-      where: {}, limit, offset,
-      include: [{
-        model: ProductInstance,
-        as: 'products'
-      }]
-    
-    });
-    return res.render("index",{record})
-    // res.status(200).json({
-    //   message: "You have successfully retrieved all products",
-    //   record,
-    // });
-  } catch (error) {
-    res.status(500).json({
-      message: "failed to get users",
-      route: "/api/products/user",
-    });
-  }
-}
-
 export async function UpdateProduct( req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
@@ -156,7 +109,6 @@ export async function UpdateProduct( req: Request, res: Response, next: NextFunc
     const record = await ProductInstance.findOne({
       where: { id },
     });
-    console.log(record)
     if (!record) {
       return res.status(404).json({
         error: "Cannot find product",

@@ -36,11 +36,6 @@ async function SignUpUser(req, res, next) {
             password: pwHash,
         });
         res.redirect('/regpass');
-        // res.status(201);
-        // res.json({
-        //   message: "You have successfully created an account",
-        //   record,
-        // });
     }
     catch (error) {
         console.log(error);
@@ -58,10 +53,8 @@ async function loginUser(req, res, next) {
             });
         }
         const User = await users_1.UserInstance.findOne({ where: { email: req.body.email } });
-        // console.log(User)
         const { id } = User;
         const token = (0, utils_2.generateToken)({ id });
-        // console.log(token)
         const validUser = await bcrypt_1.default.compare(req.body.password, User.password);
         if (!validUser) {
             res.status(401).json({
@@ -85,12 +78,12 @@ async function loginUser(req, res, next) {
         }
     }
     catch (error) {
-        console.log(error);
-        res.status(500);
+        res.status(500).json({
+            message: "Invalid credentials"
+        });
     }
 }
 exports.loginUser = loginUser;
-// function to log user to dashboard
 async function RenderLoggedUserDashboard(req, res, next) {
     let id = req.cookies.id;
     try {
@@ -103,7 +96,7 @@ async function RenderLoggedUserDashboard(req, res, next) {
         res.render('dashboard', { record });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error)
         res.redirect('/login');
         // res.status(500).json({
         //   message: "error, something went wrong"

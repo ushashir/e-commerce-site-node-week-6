@@ -2,12 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { UserInstance } from "../model/users";
 import { signUpUserSchema, options, loginUserSchema } from "../utils/utils";
-
 import { generateToken } from '../utils/utils' 
-
 import bcrypt from 'bcrypt';
 import { ProductInstance } from "../model/products";
-  
 export async function SignUpUser(req: Request, res: Response, next: NextFunction) {
   let id = uuidv4();
   try {
@@ -32,18 +29,11 @@ export async function SignUpUser(req: Request, res: Response, next: NextFunction
       phone: req.body.phone,
       address: req.body.address,
       password: pwHash,
-    });
-    
+    });  
     res.redirect('/regpass')
-      // res.status(201);
-    // res.json({
-    //   message: "You have successfully created an account",
-    //   record,
-    // });
   } catch (error) {
      console.log(error);
     res.status(500);
-   
   }
 }
 
@@ -57,10 +47,8 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
         });
       }
     const User = await UserInstance.findOne({ where: { email: req.body.email } }) as unknown as { [key: string]: string }
-    // console.log(User)
     const { id } = User;
     const token = generateToken({ id })
-    // console.log(token)
     const validUser = await bcrypt.compare(req.body.password, User.password)
      if (!validUser) {
       res.status(401).json({
@@ -69,7 +57,6 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
         User
       })
     } 
-
     if (validUser) {
       res.cookie("token", token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -83,15 +70,14 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
         })
          res.redirect("/dashboard")
     } 
-  
   } catch (error) {
-      console.log(error);
-    res.status(500);
-  
+    res.status(500).json({
+      message: "Invalid credentials"
+    })
+
   }
 }
 
-// function to log user to dashboard
 export async function RenderLoggedUserDashboard(req: Request, res: Response, next: NextFunction) {
   let id = req.cookies.id;
   try {
@@ -103,9 +89,8 @@ export async function RenderLoggedUserDashboard(req: Request, res: Response, nex
     });
    res.render('dashboard', {record})
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     res.redirect('/login')
-    
     // res.status(500).json({
     //   message: "error, something went wrong"
     // })

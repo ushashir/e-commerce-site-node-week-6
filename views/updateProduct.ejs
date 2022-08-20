@@ -62,7 +62,7 @@
         <p>Edit Product details below to add new product</p>
         <hr>
 
-        <form method="POST" action="/api/products/<%=product.id%>" >
+        <form method="POST" action="/products/api/<%=product.id%>" >
 
             <div class="d-flex flex-row align-items-center mb-4">
                 <div class="form-outline flex-fill mb-0">
@@ -82,7 +82,7 @@
             <!-- Product image -->
             <div class="d-flex flex-row align-items-center mb-4">
                 <label>Past image URL</label> <br>
-                <input type="text" name="image" placeholder="Paste image URL" value="<%=product.image%>">
+                <input type="text" name="image" placeholder="Paste image URL" value="<%=product.image%>" class="form-control">
             </div>
 
             <!-- brand -->
@@ -142,9 +142,6 @@
     </div>
     </section>
 
-     
-
-    
     <!-- Footer Section Start -->
 
     <footer>

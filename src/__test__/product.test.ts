@@ -2,7 +2,6 @@ import {
   AddProduct,
   GetProducts,
   GetProduct,
-  GetUserProducts,
   UpdateProduct,
   deleteProduct,
 } from "../controller/productsController";
